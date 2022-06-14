@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:coda_test/features/login/data/model/user_model.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';

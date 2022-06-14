@@ -1,0 +1,20 @@
+{
+    "success": true,
+    "response": {
+        "id": 1,
+        "firstname": "empty",
+        "lastname": "",
+        "email": "test@coda.com",
+        "photo": "",
+        "phone": "",
+        "facebook_id": null,
+        "role": 0,
+        "created_at": "2022-06-10T23:18:20.000000Z",
+        "updated_at": "2022-06-10T23:18:20.000000Z",
+        "status": 0,
+        "is_notification": 0,
+        "caption": null,
+        "token_type": "bearer",
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWdlbmN5Y29kYS5jb20iLCJhdWQiOiJodHRwczpcL1wvYWdlbmN5Y29kYS5jb20iLCJpYXQiOjE2NTUyMTYyMjksIm5iZiI6MTY1NTIxNjIyOSwiZXhwIjoxNjU2NTEyMjI5LCJ1aWQiOjEsImRhdGEiOnsiaWQiOjEsImVtYWlsIjoidGVzdEBjb2RhLmNvbSJ9fQ.CIhOM7phABV-p9EJIskmvOM0FbLDCgYzZF5Jzeqh3qk"
+    }
+}

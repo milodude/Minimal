@@ -23,7 +23,6 @@ class UserDataSource implements UserRepository{
       'Accept': 'text/plain',
       'Access-Control-Allow-Origin': '*',
     });
-    print(response.statusCode);
     if (response.statusCode == 200) {
       UserModel userModel = UserModel.fromJson(json.decode(response.body));
       return userModel;

@@ -12,3 +12,5 @@ class ServerFailure extends Failure {
   @override
   List<Object?> get props => [message];
 }
+
+const String serverException = 'Could not connect to the server';

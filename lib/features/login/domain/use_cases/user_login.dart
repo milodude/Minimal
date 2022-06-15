@@ -28,6 +28,6 @@ class Params extends Equatable {
     required this.password,
   });
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [userName, password];
 
 }

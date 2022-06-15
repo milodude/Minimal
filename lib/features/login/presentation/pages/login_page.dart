@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       body: SafeArea(
-          child: Container(
+          child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Stack(
@@ -178,7 +178,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: ElevatedButton(
-                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black,
                       padding: const EdgeInsets.symmetric(
@@ -189,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                       textStyle: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
+                    onPressed: () {},
                     child: const Text(
                       'LOG IN',
                       style: TextStyle(letterSpacing: 0.5),

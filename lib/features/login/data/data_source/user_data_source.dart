@@ -17,15 +17,24 @@ class UserDataSource implements UserRepository{
   
   @override
   Future<UserModel> login({required String userName,required String password}) async {
-    Uri uri = urlProvider.getUrl('/mia-auth/login',null);
+    final queryParameters = {
+      'email': userName,
+      'password': password
+    };
+    Uri uri = urlProvider.getUrl('/mia-auth/login',queryParameters);
     var response = await httpClient.get(uri, headers: {
       'Content-type': 'application/json',
       'Accept': 'text/plain',
       'Access-Control-Allow-Origin': '*',
     });
     if (response.statusCode == 200) {
-      UserModel userModel = UserModel.fromJson(json.decode(response.body));
-      return userModel;
+    var decodedJson = json.decode(response.body);
+      if(decodedJson['success'] == true){
+        UserModel userModel = UserModel.fromJson(decodedJson);
+        return userModel;
+      }else{
+          throw ServerFailure(decodedJson['error']['message']);
+      }
     } else {
       throw ServerFailure(
           'Something went wrong while logging in');

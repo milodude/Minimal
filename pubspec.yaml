@@ -16,9 +16,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  get_it: ^7.2.0
   google_fonts: ^3.0.1
   http: ^0.13.4
   mockito: ^5.2.0
+  provider: ^6.0.3
   simple_animations: ^4.1.0
 
 dev_dependencies:

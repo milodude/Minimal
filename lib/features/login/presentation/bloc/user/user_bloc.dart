@@ -15,7 +15,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UserEvent>((event, emit) async {
       if (event is LoginEvent) {
         emit(const Loading());
-        final result = await userLoginUseCase(params: Params(userName: event.userName, password: event.password));
+        final result = await userLoginUseCase(Params(userName: event.userName, password: event.password));
         result.fold(
           (left) => emit(Error(errorMessage: left.toString())),
           (right){

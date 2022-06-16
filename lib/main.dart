@@ -1,11 +1,7 @@
-import 'package:coda_test/features/login/presentation/bloc/user/user_bloc.dart';
 import 'package:coda_test/features/login/presentation/pages/login_base.dart';
-import 'package:coda_test/features/login/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'injection_container.dart' as di;
-import 'injection_container.dart';
 
 void main() async {
   await di.init();

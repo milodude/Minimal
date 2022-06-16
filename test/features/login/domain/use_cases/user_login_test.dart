@@ -22,7 +22,7 @@ void main() {
       var tUserInfo = const UserInfo(id: 1, firstName: 'Matt', lastName: 'Raverta', email: '@gmail.com', photo: 'someUrl', accessToken: 'access');
       when(mockUserRepository.login(userName: userName, password: password)).thenAnswer((_) async=> Future.value(Right(tUserInfo)));
       //ACT
-      var result = await useCase(params: Params(userName: userName, password: password));
+      var result = await useCase(Params(userName: userName, password: password));
       //ASSERT
       expect(result, Right(tUserInfo));
       ///*checking arguments are the ones that are sent.
@@ -36,7 +36,7 @@ void main() {
       var failure = ServerFailure('Could not reach server');
       when(mockUserRepository.login(userName: userName, password: password)).thenAnswer((_) async=> Future.value(Left(failure)));
       //ACT
-      var result = await useCase(params: Params(userName: userName, password: password));
+      var result = await useCase(Params(userName: userName, password: password));
       //ASSERT
       expect(result, Left(failure));
       verify(mockUserRepository.login(userName: userName, password: password));

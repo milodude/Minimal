@@ -30,7 +30,7 @@ void main() {
 
     blocTest<UserBloc, UserState>(
         'emits [Loading, Error] when getting my watchlists fails.',
-        setUp: () => when(mockUserLogin(params: const Params(userName: 'Matt', password: '123456'))).thenAnswer(
+        setUp: () => when(mockUserLogin(const Params(userName: 'Matt', password: '123456'))).thenAnswer(
             (realInvocation) async =>
                 Future.value(Left(ServerFailure(serverException)))),
         build: () {
@@ -43,7 +43,7 @@ void main() {
 
     blocTest<UserBloc, UserState>(
         'emits [Loading, Loaded] when getting my watchlists.',
-        setUp: () => when(mockUserLogin(params: const Params(userName: 'Matt', password: '123456'))).thenAnswer(
+        setUp: () => when(mockUserLogin(const Params(userName: 'Matt', password: '123456'))).thenAnswer(
             (realInvocation) async => Future.value(Right(tUserinfo))),
         build: () {
           return bloc;

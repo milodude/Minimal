@@ -40,9 +40,8 @@ class MockUserLogin extends _i1.Mock implements _i4.UserLogin {
       (super.noSuchMethod(Invocation.getter(#userRepository),
           returnValue: _FakeUserRepository_0()) as _i2.UserRepository);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.UserInfo>> call(
-          {_i4.Params? params}) =>
-      (super.noSuchMethod(Invocation.method(#call, [], {#params: params}),
+  _i5.Future<_i3.Either<_i6.Failure, _i7.UserInfo>> call(_i4.Params? params) =>
+      (super.noSuchMethod(Invocation.method(#call, [params]),
               returnValue: Future<_i3.Either<_i6.Failure, _i7.UserInfo>>.value(
                   _FakeEither_1<_i6.Failure, _i7.UserInfo>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.UserInfo>>);

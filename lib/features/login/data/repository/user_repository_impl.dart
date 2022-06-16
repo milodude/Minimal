@@ -17,7 +17,7 @@ class UserRepositoryImpl extends domain.UserRepository {
       var result = await userDataSource.login(userName:userName, password:password);
       return Right(result);
     } on ServerFailure catch(e){
-     return Left(ServerFailure('Server error while sending the request'));
+     return Left(ServerFailure('Server error while sending the request: $e'));
     }catch(e){
      return Left(ServerFailure('Server error while sending the request'));
     }

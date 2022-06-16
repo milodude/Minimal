@@ -12,10 +12,10 @@ class UserLogin implements UseCase<UserInfo, Params>{
   UserLogin({
     required this.userRepository,
   });
-
+  
   @override
-  Future<Either<Failure, UserInfo>> call({required Params params}) async{
-    return await userRepository.login(userName: params.userName, password: params.password);
+  Future<Either<Failure, UserInfo>> call(Params params) async {
+        return await userRepository.login(userName: params.userName, password: params.password);
   }
 }
 ///!Params class for this use case

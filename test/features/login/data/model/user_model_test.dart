@@ -29,5 +29,19 @@ void main() {
       //Assert
       expect(result, equals(tUser));
     });
+
+     testWidgets('Should parse all user fields from a json response', (tester) async {
+       //Arrange
+      final Map<String, dynamic> decoded =
+          json.decode(fixture('login/user_data.json'));
+      //Act
+      var result = UserModel.fromJson(decoded);
+      //Assert
+      expect(result.accessToken, equals(tUser.accessToken));
+      expect(result.email, equals(tUser.email));
+      expect(result.firstName, equals(tUser.firstName));
+      expect(result.lastName, equals(tUser.lastName));
+      expect(result.photo, equals(tUser.photo));
+    });
   });
 }

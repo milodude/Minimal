@@ -11,13 +11,14 @@ class UserModel extends UserInfo {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> user) {
-    return UserModel(
+    var userModel = UserModel(
       id: user['response']['id'],
-      firstName: user['response']['firstName'] ?? '',
-      lastName: user['response']['lastName'] ?? '',
+      firstName: user['response']['firstname'] ?? '',
+      lastName: user['response']['lastname'] ?? '',
       email: user['response']['email'] ?? '',
       photo: user['response']['photo'] ?? '',
-      accessToken: user['response']['accessToken'] ?? '',
+      accessToken: user['response']['access_token'] ?? '',
     );
+    return userModel;
   }
 }

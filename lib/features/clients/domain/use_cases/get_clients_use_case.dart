@@ -5,10 +5,10 @@ import '../../../../core/use_cases/use_case.dart';
 import '../entities/client.dart';
 import '../repository/client_repository.dart';
 
-class GetClients implements UseCase<List<ClientData>, NoParams>{
+class GetClientsUseCase implements UseCase<List<ClientData>, NoParams>{
   final ClientRepository clientRepository;
 
-  GetClients({required this.clientRepository});
+  GetClientsUseCase({required this.clientRepository});
   
   @override
   Future<Either<Failure, List<ClientData>>> call(NoParams params) async {

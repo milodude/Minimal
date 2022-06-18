@@ -14,8 +14,8 @@ import 'get_clients_use_case_test.mocks.dart';
 @GenerateMocks([ClientRepository])
 void main() {
  MockClientRepository mockClientRepository = MockClientRepository();
-  GetClients useCase =
-      GetClients(clientRepository: mockClientRepository);
+  GetClientsUseCase useCase =
+      GetClientsUseCase(clientRepository: mockClientRepository);
 
   group('GetClients UseCase: ', () {
     testWidgets('Should get a list of clients', (tester) async {

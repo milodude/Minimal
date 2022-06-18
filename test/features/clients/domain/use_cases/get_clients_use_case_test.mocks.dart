@@ -38,4 +38,11 @@ class MockClientRepository extends _i1.Mock implements _i3.ClientRepository {
                   Future<_i2.Either<_i5.Failure, List<_i6.ClientData>>>.value(
                       _FakeEither_0<_i5.Failure, List<_i6.ClientData>>()))
           as _i4.Future<_i2.Either<_i5.Failure, List<_i6.ClientData>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i6.ClientData>> addClient(
+          _i6.ClientData? clientData) =>
+      (super.noSuchMethod(Invocation.method(#addClient, [clientData]),
+          returnValue: Future<_i2.Either<_i5.Failure, _i6.ClientData>>.value(
+              _FakeEither_0<_i5.Failure, _i6.ClientData>())) as _i4
+          .Future<_i2.Either<_i5.Failure, _i6.ClientData>>);
 }

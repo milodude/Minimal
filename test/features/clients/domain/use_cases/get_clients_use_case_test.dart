@@ -21,7 +21,7 @@ void main() {
     testWidgets('Should get a list of clients', (tester) async {
       //ARRANGE
       var tClientList = <ClientData>[
-        const ClientData(id: 7, firstName: 'Matt', lastName: 'Raverta', email: 'some@email.com')
+        const ClientData(id: 7, firstName: 'Matt', lastName: 'Raverta', email: 'some@email.com', caption: '')
       ];
       when(mockClientRepository.getClientList())
           .thenAnswer(((realInvocation) => Future.value(Right(tClientList))));

@@ -9,7 +9,6 @@ class ClientModel extends ClientData {
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> client) {
-      print(client);
 
     return ClientModel(
       id: client['id'],

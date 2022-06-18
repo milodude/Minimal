@@ -6,6 +6,7 @@ class ClientModel extends ClientData {
     required super.firstName,
     required super.lastName,
     required super.email,
+    required super.caption,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> client) {
@@ -15,6 +16,7 @@ class ClientModel extends ClientData {
       firstName: client['firstname'],
       lastName: client['lastname'],
       email: client['email'],
+      caption: client['caption'],
     );
   }
 }

@@ -11,6 +11,7 @@ void main() {
       firstName: 'Franco',
       lastName: 'Camiletti',
       email: 'matias@agencycoda.com',
+      caption: ''
     );
 
     testWidgets('Should be a client model', (tester) async {

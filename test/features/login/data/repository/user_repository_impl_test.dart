@@ -14,8 +14,8 @@ import 'user_repository_impl_test.mocks.dart';
 @GenerateMocks([UserDataSource])
 void main() {
   MockUserDataSource mockUserDataSource = MockUserDataSource();
-  UserRepositoryImpl userRepositoryImpl =
-      UserRepositoryImpl(userDataSource: mockUserDataSource);
+  UserRepositoryDataSourceImpl userRepositoryImpl =
+      UserRepositoryDataSourceImpl(userDataSource: mockUserDataSource);
   const String userName = 'Matt';
   const String password = '123456';
 

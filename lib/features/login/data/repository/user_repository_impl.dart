@@ -6,9 +6,9 @@ import 'package:coda_test/features/login/domain/entities/user_info.dart';
 
 import '../../domain/repository/user_repository.dart' as domain;
 
-class UserRepositoryImpl extends domain.UserRepository {
+class UserRepositoryDataSourceImpl extends domain.UserRepository {
   UserDataSource userDataSource;
-  UserRepositoryImpl({
+  UserRepositoryDataSourceImpl({
     required this.userDataSource,
   });
   @override

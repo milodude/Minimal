@@ -22,7 +22,6 @@ void main() {
   final tClientListResponse = json.decode(fixture('clients/client_list.json'));
 
   List<ClientModel> _getList() {
-    //var decodedJson = json.decode(tClientListResponse);
     List<ClientModel> clientList = <ClientModel>[];
     List<dynamic> responseList = tClientListResponse['response']['data'];
     for (Map<String, dynamic> item in responseList) {
@@ -33,10 +32,13 @@ void main() {
   }
 
   void setUpHttpCallSuccess200() {
-    when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-        (_) async => Future.value(
-            http.Response(fixture('clients/client_list.json'), 200)));
-    final uri = Uri.https(serverUrl, '/client/list', null);
+    final uri = UrlProvider().getUrl('/client/list', { });
+    when(mockClient.post(uri, body: json.encode({}), headers: {
+      'Content-type': 'application/json',
+      'Accept': '*/*',
+      'Access-Control-Allow-Origin': '*',
+    })).thenAnswer((_) async =>
+        Future.value(http.Response(fixture('clients/client_list.json'), 200)));
     when(mockUrlProvider.getUrl(any, any)).thenAnswer((realInvocation) => uri);
   }
 
@@ -55,10 +57,10 @@ void main() {
       //Act
       await clientDataSource.getClients();
       //Assert
-      verify(mockClient.get(any, headers: {
+      verify(mockClient.post(any, body: json.encode({}),headers: {
         'Content-type': 'application/json',
-        'Accept': 'text/plain',
-        'Access-Control-Allow-Origin': '*'
+        'Accept': '*/*',
+        'Access-Control-Allow-Origin': '*',
       }));
     });
   });
@@ -69,7 +71,7 @@ void main() {
       //Arrange
       setUpHttpCallSuccess200();
       //Act
-     var result = await clientDataSource.getClients();
+      var result = await clientDataSource.getClients();
       //Assert
       expect(result, equals(_getList()));
     });
@@ -81,7 +83,7 @@ void main() {
       when(mockUrlProvider.getUrl(any, any))
           .thenAnswer((realInvocation) => uri);
 
-      when(mockClient.get(uri, headers: anyNamed('headers'))).thenAnswer(
+      when(mockClient.post(uri, body: json.encode({}), headers: anyNamed('headers'))).thenAnswer(
         (realInvocation) async =>
             http.Response('Something went wrong while logging in', 404),
       );

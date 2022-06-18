@@ -17,13 +17,13 @@ class ClientDataSource implements ClientRepository {
 
   @override
   Future<List<ClientModel>> getClients() async {
-    Uri uri = urlProvider.getUrl('/client/list', null);
-    var response = await httpClient.get(uri, headers: {
+    Uri uri = urlProvider.getUrl('/client/list', { });
+    
+    var response = await httpClient.post(uri,body: json.encode({}), headers: {
       'Content-type': 'application/json',
-      'Accept': 'text/plain',
+      'Accept': '*/*',
       'Access-Control-Allow-Origin': '*',
     });
-
     if (response.statusCode == 200) {
       var decodedJson = json.decode(response.body);
       if (decodedJson['success'] == true) {

@@ -27,7 +27,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         List<ClientData> filteredLst =
             List.from(state.clientsData.where((value) => !state.clientDataToShow.contains(value)));
         filteredLst.sort(((a, b) => a.id.compareTo(b.id)));
-        var addedValues =  state.clientDataToShow + filteredLst.take(5).toList();
+        var addedValues =[state.clientDataToShow, filteredLst.take(5)].expand((x) => x).toList();
         emit(Loaded(state.clientsData, addedValues));
       }
     });

@@ -7,7 +7,7 @@ abstract class UserState extends Equatable {
   });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userinfo.accessToken];
 }
 
 class UserInitial extends UserState {

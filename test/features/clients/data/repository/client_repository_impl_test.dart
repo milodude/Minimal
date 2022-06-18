@@ -14,11 +14,11 @@ import 'client_repository_impl_test.mocks.dart';
 @GenerateMocks([ClientDataSource])
 void main() {
   MockClientDataSource mockClientDataSource = MockClientDataSource();
-  ClientRepositoryImpl clientRepositoryImpl = ClientRepositoryImpl(clientDataSource: mockClientDataSource);
- final tClientListResponse = json.decode(fixture('clients/client_list.json'));
+  ClientRepositoryImpl clientRepositoryImpl =
+      ClientRepositoryImpl(clientDataSource: mockClientDataSource);
+  final tClientListResponse = json.decode(fixture('clients/client_list.json'));
 
   List<ClientModel> _getList() {
-    //var decodedJson = json.decode(tClientListResponse);
     List<ClientModel> clientList = <ClientModel>[];
     List<dynamic> responseList = tClientListResponse['response']['data'];
     for (Map<String, dynamic> item in responseList) {
@@ -27,9 +27,10 @@ void main() {
     }
     return clientList;
   }
- 
-  testWidgets('client repository impl ...', (tester) async {
-     //ARRANGE
+
+  group('Client repository impl tests: ', () {
+    testWidgets('Should  get a list of clients', (tester) async {
+      //ARRANGE
       final tClientListModel = _getList();
       when(mockClientDataSource.getClients())
           .thenAnswer((realInvocation) async => Future.value(tClientListModel));
@@ -41,16 +42,34 @@ void main() {
       result.fold((left) => fail('test failed'), (right) {
         expect(right, equals(tClientListModel));
       });
-  });
+    });
 
-   testWidgets('Should get a list of clients but gets a failure', (tester) async {
+    testWidgets('Should get a list of clients but gets a failure',
+        (tester) async {
       //ARRANGE
-      when(mockClientDataSource.getClients())
-          .thenThrow((realInvocation) async => Future.value(ServerFailure('Error Message')));
+      when(mockClientDataSource.getClients()).thenThrow(
+          (realInvocation) async =>
+              Future.value(ServerFailure('Error Message')));
       //ACT
       var result = await clientRepositoryImpl.getClientList();
       //ASSERT
       verify(mockClientDataSource.getClients());
       expect(true, result.isLeft());
     });
+
+    testWidgets('Should add a client', (tester) async {
+      //ARRANGE
+      final tClient = _getList().first;
+      when(mockClientDataSource.addClient(tClient))
+          .thenAnswer((realInvocation) async => Future.value(tClient));
+      //ACT
+      var result = await clientRepositoryImpl.addClient(tClient);
+      //ASSERT
+      verify(mockClientDataSource.addClient(tClient));
+      expect(true, result.isRight());
+      result.fold((left) => fail('test failed'), (right) {
+        expect(right, equals(tClient));
+      });
+    });
+  });
 }

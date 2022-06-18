@@ -2,12 +2,12 @@
 // in coda_test/test/features/clients/data/repository/client_repository_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i6;
 
 import 'package:coda_test/core/provider/url_provider.dart' as _i3;
 import 'package:coda_test/features/clients/data/data_source/client_data_source.dart'
-    as _i4;
-import 'package:coda_test/features/clients/data/model/client_model.dart' as _i6;
+    as _i5;
+import 'package:coda_test/features/clients/data/model/client_model.dart' as _i4;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -25,10 +25,12 @@ class _FakeClient_0 extends _i1.Fake implements _i2.Client {}
 
 class _FakeUrlProvider_1 extends _i1.Fake implements _i3.UrlProvider {}
 
+class _FakeClientModel_2 extends _i1.Fake implements _i4.ClientModel {}
+
 /// A class which mocks [ClientDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockClientDataSource extends _i1.Mock implements _i4.ClientDataSource {
+class MockClientDataSource extends _i1.Mock implements _i5.ClientDataSource {
   MockClientDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -42,8 +44,13 @@ class MockClientDataSource extends _i1.Mock implements _i4.ClientDataSource {
       (super.noSuchMethod(Invocation.getter(#urlProvider),
           returnValue: _FakeUrlProvider_1()) as _i3.UrlProvider);
   @override
-  _i5.Future<List<_i6.ClientModel>> getClients() => (super.noSuchMethod(
+  _i6.Future<List<_i4.ClientModel>> getClients() => (super.noSuchMethod(
           Invocation.method(#getClients, []),
-          returnValue: Future<List<_i6.ClientModel>>.value(<_i6.ClientModel>[]))
-      as _i5.Future<List<_i6.ClientModel>>);
+          returnValue: Future<List<_i4.ClientModel>>.value(<_i4.ClientModel>[]))
+      as _i6.Future<List<_i4.ClientModel>>);
+  @override
+  _i6.Future<_i4.ClientModel> addClient(_i4.ClientModel? clientModel) =>
+      (super.noSuchMethod(Invocation.method(#addClient, [clientModel]),
+              returnValue: Future<_i4.ClientModel>.value(_FakeClientModel_2()))
+          as _i6.Future<_i4.ClientModel>);
 }

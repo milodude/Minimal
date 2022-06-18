@@ -19,4 +19,6 @@ class ClientModel extends ClientData {
       caption: client['caption'],
     );
   }
+
+  
 }

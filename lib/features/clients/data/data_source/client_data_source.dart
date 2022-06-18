@@ -7,6 +7,7 @@ import '../../../../core/provider/url_provider.dart';
 
 abstract class ClientRepository {
   Future<List<ClientModel>> getClients();
+  Future<ClientModel> addClient(ClientModel clientModel);
 }
 
 class ClientDataSource implements ClientRepository {
@@ -40,5 +41,11 @@ class ClientDataSource implements ClientRepository {
     } else {
       throw ServerFailure('Something went wrong while requesting clients list');
     }
+  }
+  
+  @override
+  Future<ClientModel> addClient(ClientModel clientModel) {
+    // TODO: implement addClient
+    throw UnimplementedError();
   }
 }

@@ -7,19 +7,18 @@ import '../../../../fixtures/fixture_reader.dart';
 void main() {
   group('Client model tests: ', () {
     var tClient = const ClientModel(
-      id: 816,
-      firstName: 'Franco',
-      lastName: 'Camiletti',
-      email: 'matias@agencycoda.com',
-      caption: ''
-    );
+        id: 816,
+        firstName: 'Franco',
+        lastName: 'Camiletti',
+        email: 'matias@agencycoda.com',
+        caption: '');
 
     testWidgets('Should be a client model', (tester) async {
       expect(tClient, isA<ClientModel>());
     });
-    
+
     testWidgets('Should parse a client from a json response', (tester) async {
-       //Arrange
+      //Arrange
       final Map<String, dynamic> decoded =
           json.decode(fixture('clients/client.json'));
       //Act
@@ -28,8 +27,9 @@ void main() {
       expect(result, equals(tClient));
     });
 
-     testWidgets('Should parse all client fields from a json response', (tester) async {
-       //Arrange
+    testWidgets('Should parse all client fields from a json response',
+        (tester) async {
+      //Arrange
       final Map<String, dynamic> decoded =
           json.decode(fixture('clients/client.json'));
       //Act
@@ -40,6 +40,19 @@ void main() {
       expect(result.firstName, equals(tClient.firstName));
       expect(result.lastName, equals(tClient.lastName));
       expect(result.caption, equals(tClient.caption));
+    });
+
+    testWidgets('Should parse aclient model to a Map object to send as json',
+        (tester) async {
+      //Arrange
+      //Act
+      var result = tClient.toJson();
+      //Assert
+      expect(result['id'], equals(tClient.id));
+      expect(result['email'], equals(tClient.email));
+      expect(result['firstname'], equals(tClient.firstName));
+      expect(result['lastname'], equals(tClient.lastName));
+      expect(result['caption'], equals(tClient.caption));
     });
   });
 }

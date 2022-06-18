@@ -1,4 +1,5 @@
 import 'package:coda_test/features/clients/domain/entities/client.dart';
+import 'package:http/http.dart';
 
 class ClientModel extends ClientData {
   const ClientModel({
@@ -10,7 +11,6 @@ class ClientModel extends ClientData {
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> client) {
-
     return ClientModel(
       id: client['id'],
       firstName: client['firstname'],
@@ -20,5 +20,11 @@ class ClientModel extends ClientData {
     );
   }
 
-  
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'firstname': firstName,
+        'lastname': lastName,
+        'email': email,
+        'caption': caption
+      };
 }

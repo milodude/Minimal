@@ -20,6 +20,7 @@ void main() {
   ClientDataSource clientDataSource =
       ClientDataSource(httpClient: mockClient, urlProvider: mockUrlProvider);
   final tClientListResponse = json.decode(fixture('clients/client_list.json'));
+  ClientModel tClient =const ClientModel(id: 946, firstName: 'Matias', lastName: 'Raven', email: 'matiasRaven@agencycoda.com', caption: '70');
 
   List<ClientModel> _getList() {
     List<ClientModel> clientList = <ClientModel>[];
@@ -89,6 +90,39 @@ void main() {
       );
       //Act
       final call = clientDataSource.getClients();
+      //Assert
+      expect(() => call, throwsA(const TypeMatcher<ServerFailure>()));
+    });
+
+     test('Should save a new client',() async {
+      //Arrange
+      final uri = Uri.https(serverUrl, '/client/save', null);
+      when(mockUrlProvider.getUrl(any, any))
+          .thenAnswer((realInvocation) => uri);
+     
+      when(mockClient.post(uri, body: json.encode(tClient.toJson()), headers: anyNamed('headers'))).thenAnswer(
+        (realInvocation) async => Future.value(http.Response(fixture('clients/client_response.json'), 200)),
+      );
+      //Act
+      final result = await clientDataSource.addClient(tClient);
+      //Assert
+      expect(result, equals(tClient));
+    });
+
+
+    test('Should throw a serverException when the respond is 404 or other',
+        () async {
+      //Arrange
+      final uri = Uri.https(serverUrl, '/client/save', null);
+      when(mockUrlProvider.getUrl(any, any))
+          .thenAnswer((realInvocation) => uri);
+
+      when(mockClient.post(uri, body: json.encode(tClient.toJson()), headers: anyNamed('headers'))).thenAnswer(
+        (realInvocation) async =>
+            http.Response('Something went wrong while saving the client', 404),
+      );
+      //Act
+      final call = clientDataSource.addClient(tClient);
       //Assert
       expect(() => call, throwsA(const TypeMatcher<ServerFailure>()));
     });

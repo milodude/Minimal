@@ -1,5 +1,4 @@
 import 'package:coda_test/features/clients/domain/entities/client.dart';
-import 'package:http/http.dart';
 
 class ClientModel extends ClientData {
   const ClientModel({

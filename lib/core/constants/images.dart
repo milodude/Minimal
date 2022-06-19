@@ -1,0 +1,1 @@
+const String uploadImage = 'assets/images/upload-coda.jpg';

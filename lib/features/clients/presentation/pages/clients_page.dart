@@ -1,13 +1,14 @@
 import 'dart:ui';
 
+import 'package:coda_test/features/clients/presentation/pages/base_clients_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_animations/stateless_animation/play_animation.dart';
 
-import 'package:coda_test/features/clients/domain/entities/client.dart';
-import 'package:coda_test/features/clients/presentation/bloc/client/client_bloc.dart';
-
-import '../widgets/search_no_results_found.dart';
+import '../../../../core/shared_widgets/yellow_bubble.dart';
+import '../bloc/client/client_bloc.dart';
+import 'add_client_modal.dart';
+import 'clients_grid_view.dart';
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({Key? key}) : super(key: key);
@@ -22,10 +23,10 @@ class _ClientsPageState extends State<ClientsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _getBody();
+    return _getBody(context);
   }
 
-  Widget _getBody() {
+  Widget _getBody(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -33,48 +34,34 @@ class _ClientsPageState extends State<ClientsPage> {
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
-              Positioned(
-                  top: 200,
-                  left: MediaQuery.of(context).size.width - 140,
-                  child: Container(
-                    width: 200,
-                    height: 209,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color.fromRGBO(228, 243, 83, 1)),
-                  )),
-              Positioned(
-                  top: -30,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color.fromRGBO(228, 243, 83, 0.33)),
-                  )),
-              Positioned(
-                top: 500,
-                left: 220,
-                child: Container(
+              YellowBubble(
+                  context: context,
+                  width: 200,
+                  heigth: 209,
+                  topPosition: 200,
+                  leftPosition: MediaQuery.of(context).size.width - 190),
+              YellowBubble(
+                  context: context,
+                  width: 200,
+                  heigth: 200,
+                  topPosition: -100,
+                  leftPosition: -10),
+              YellowBubble(
+                  context: context,
                   width: MediaQuery.of(context).size.width - 90,
-                  height: 305,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromRGBO(228, 243, 83, 0.33)),
-                ),
+                  heigth: 305,
+                  topPosition: 550,
+                  leftPosition: MediaQuery.of(context).size.width - 190),
+              YellowBubble(
+                context: context,
+                width: 200,
+                heigth: 200,
+                topPosition: 550,
+                leftPosition: -100,
               ),
-              Positioned(
-                  top: 550,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color.fromRGBO(228, 243, 83, 0.33)),
-                  )),
               Positioned.fill(
                   child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
                 child: Container(
                   color: Colors.transparent,
                 ),
@@ -137,7 +124,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                     ),
                                   ),
                                   onChanged: (String text) {
-                                    //_onChanged(text);
+                                    //todo: implement search;
                                   },
                                 ),
                               ),
@@ -157,7 +144,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
-                                  //Testing purposes
+                                  _displayDialog(context);
                                 },
                                 child: const Text(
                                   'ADD NEW',
@@ -173,9 +160,10 @@ class _ClientsPageState extends State<ClientsPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 32.0, right: 32),
                         child: SizedBox(
-                            height:
-                                MediaQuery.of(context).size.height - 170 - 200,
-                            child: _getClientsListview()),
+                          height:
+                              MediaQuery.of(context).size.height - 170 - 200,
+                          child: const BaseClientsGridView(),
+                        ),
                       ),
 
                       ///Add more button
@@ -225,61 +213,32 @@ class _ClientsPageState extends State<ClientsPage> {
     );
   }
 
-  Widget _getClientsListview() {
-    return BlocBuilder<ClientBloc, ClientState>(
-      builder: (context, state) {
-        if (state is Initial) {
-          ReadContext(context).read<ClientBloc>().add(const GetClients());
-        } else if (state is Loading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is Loaded) {
-          return ExpandedShowsGridView(
-            clientsToShow: state.clientsToShow,
-          );
-        } else if (state is Error) {
-          return const Center(
-              child: Text(
-                  'Error while trying to retrieve data from the backend'));
-        }
-        return const Text('Unknown error occurred');
-        // We're going to also check for the other states
+  _displayDialog(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: false,
+      transitionDuration: const Duration(milliseconds: 300),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: animation,
+            child: child,
+          ),
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return SafeArea(
+          child: Material(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                padding: const EdgeInsets.all(20),
+                color: Colors.white,
+                child: const AddClientModal()),
+          ),
+        );
       },
     );
-  }
-}
-
-///Widget that shows you a list of shows
-class ExpandedShowsGridView extends StatelessWidget {
-  ///Constructor that takes  a list of shows.
-  final List<ClientData> clientsToShow;
-
-  const ExpandedShowsGridView({
-    Key? key,
-    required this.clientsToShow,
-  }) : super(key: key);
-
-  ///Parameter. A list of shows.
-  @override
-  Widget build(BuildContext context) {
-    return clientsToShow.isEmpty
-        ? const SearchNoResultsFound()
-        : ListView.builder(
-            itemCount: clientsToShow.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: ListTile(
-                  leading: const FlutterLogo(size: 56.0),
-                  title: Text(
-                    '${clientsToShow[index].firstName} ${clientsToShow[index].lastName}',
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  subtitle: Text(
-                    clientsToShow[index].email,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  trailing: const Icon(Icons.more_vert),
-                ),
-              );
-            });
   }
 }

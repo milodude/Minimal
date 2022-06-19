@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 
+import '../../../../core/shared_widgets/yellow_bubble.dart';
 import '../../../clients/presentation/pages/clients_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -39,36 +40,9 @@ class _LoginPageState extends State<LoginPage> {
             },
             child: Stack(
               children: [
-                Positioned(
-                    top: -50,
-                    left: MediaQuery.of(context).size.width - 190,
-                    child: Container(
-                      width: 300,
-                      height: 309,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(228, 243, 83, 1)),
-                    )),
-                Positioned(
-                    top: MediaQuery.of(context).size.height / 2,
-                    left: -40,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(228, 243, 83, 0.33)),
-                    )),
-                Positioned(
-                    top: 600,
-                    left: 20,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 90,
-                      height: 305,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(228, 243, 83, 0.33)),
-                    )),
+              YellowBubble(context: context, width: 300, heigth: 309, topPosition: -50,leftPosition: MediaQuery.of(context).size.width - 190),
+              YellowBubble(context: context, width: 100, heigth: 100, topPosition: MediaQuery.of(context).size.height / 2, leftPosition: -40),
+              YellowBubble(context: context, width: MediaQuery.of(context).size.width - 90, heigth: 305, topPosition: 600, leftPosition: 20),
                 Positioned.fill(
                     child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),

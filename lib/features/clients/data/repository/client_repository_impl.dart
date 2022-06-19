@@ -45,7 +45,14 @@ class ClientRepositoryImpl extends domain.ClientRepository {
   }
   
   @override
-  Future<Either<Failure, void>> deleteClient(int clientId) {
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteClient(int clientId) async{
+    try {
+      var result = await clientDataSource.deleteClient(clientId);
+      return Right(result);
+    } on ServerFailure catch (e) {
+      return Left(ServerFailure('Server error while trying to delete a user: $e'));
+    } catch (e) {
+      return Left(ServerFailure('Server error while trying to delete a user'));
+    }
   }
 }

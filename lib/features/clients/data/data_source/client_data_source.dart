@@ -8,6 +8,7 @@ import '../../../../core/provider/url_provider.dart';
 abstract class ClientRepository {
   Future<List<ClientModel>> getClients();
   Future<ClientModel> addClient(ClientModel clientModel);
+  Future<void> deleteClient(int clientId);
 }
 
 class ClientDataSource implements ClientRepository {
@@ -66,5 +67,10 @@ class ClientDataSource implements ClientRepository {
       print('Error  al hacer el post');
       throw ServerFailure('Something went wrong while saving a client');
     }
+  }
+  
+  @override
+  Future<void> deleteClient(int clientId) {
+    throw UnimplementedError();
   }
 }

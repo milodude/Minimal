@@ -17,6 +17,7 @@ void main() {
   ClientRepositoryImpl clientRepositoryImpl =
       ClientRepositoryImpl(clientDataSource: mockClientDataSource);
   final tClientListResponse = json.decode(fixture('clients/client_list.json'));
+  const int clientId = 70;
 
   List<ClientModel> _getList() {
     List<ClientModel> clientList = <ClientModel>[];
@@ -70,6 +71,30 @@ void main() {
       result.fold((left) => fail('test failed'), (right) {
         expect(right, equals(tClient));
       });
+    });
+
+    testWidgets('Should delete a client', (tester) async {
+      //ARRANGE
+
+      when(mockClientDataSource.deleteClient(clientId))
+          .thenAnswer((realInvocation) async => Future.value(null));
+      //ACT
+      var result = await clientRepositoryImpl.deleteClient(clientId);
+      //ASSERT
+      verify(mockClientDataSource.deleteClient(clientId)).called(1);
+      expect(true, result.isRight());
+    });
+
+    testWidgets('Should delete a client but gets a failure', (tester) async {
+      //ARRANGE
+      when(mockClientDataSource.deleteClient(clientId)).thenThrow(
+          (realInvocation) async =>
+              Future.value(ServerFailure('Error Message')));
+      //ACT
+      var result = await clientRepositoryImpl.deleteClient(clientId);
+      //ASSERT
+      verify(mockClientDataSource.deleteClient(clientId)).called(1);
+      expect(true, result.isLeft());
     });
   });
 }

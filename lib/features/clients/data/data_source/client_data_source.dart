@@ -46,21 +46,24 @@ class ClientDataSource implements ClientRepository {
   @override
   Future<ClientModel> addClient(ClientModel clientModel) async {
      Uri uri = urlProvider.getUrl('/client/save', null);
-
+    print('Hizo todo el camino papa');
     var response = await httpClient.post(uri,body:json.encode(clientModel.toJson()), headers: {
       'Content-type': 'application/json',
       'Accept': '*/*',
       'Access-Control-Allow-Origin': '*',
     });
+    print('Status code ' + response.statusCode.toString());
     if (response.statusCode == 200) {
       var decodedJson = json.decode(response.body);
       if (decodedJson['success'] == true) {
         ClientModel clientModel = ClientModel.fromJson(decodedJson['response']);
         return clientModel;
       } else {
+        print('No por success');
         throw ServerFailure(decodedJson['error']['message']);
       }
     } else {
+      print('Error  al hacer el post');
       throw ServerFailure('Something went wrong while saving a client');
     }
   }

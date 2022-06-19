@@ -1,4 +1,4 @@
-import 'package:coda_test/features/clients/presentation/bloc/client/client_bloc.dart';
+import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'package:coda_test/features/clients/presentation/pages/clients_page.dart';
 import 'package:coda_test/features/login/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';

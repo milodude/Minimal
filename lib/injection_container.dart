@@ -6,8 +6,10 @@ import 'features/clients/data/data_source/client_data_source.dart';
 import 'features/clients/data/repository/client_repository_impl.dart';
 import 'features/clients/domain/repository/client_repository.dart'
     as client_domain;
+import 'features/clients/domain/use_cases/add_client_use_case.dart';
 import 'features/clients/domain/use_cases/get_clients_use_case.dart';
-import 'features/clients/presentation/bloc/client/client_bloc.dart';
+import 'features/clients/presentation/bloc/clients/client_bloc.dart';
+import 'features/clients/presentation/bloc/single_client/single_client_bloc.dart';
 import 'features/login/data/data_source/user_data_source.dart';
 import 'features/login/data/repository/user_repository_impl.dart';
 import 'features/login/domain/repository/user_repository.dart' as domain;
@@ -24,12 +26,16 @@ Future<void> init() async {
   // pagina anterior. Si llegamos a a hacer un dispose puede que hayamos eliminado ese singleton y va a traernos un error.
   sl.registerFactory(() => UserBloc(userLoginUseCase: sl()));
   sl.registerFactory(() => ClientBloc(getClientsUseCase: sl()));
+  sl.registerFactory(() => SingleClientBloc(addClientUseCase: sl()));
+
 
   //Al no mantener estados en el caso de uso, no es necesario tener una factoria
   //!Use Cases
   sl.registerLazySingleton<UserLogin>(() => UserLogin(userRepository: sl()));
   sl.registerLazySingleton<GetClientsUseCase>(
       () => GetClientsUseCase(clientRepository: sl()));
+  sl.registerLazySingleton<AddClientUseCase>(
+      () => AddClientUseCase(clientRepository: sl()));
 
   //!Repository
   sl.registerLazySingleton<domain.UserRepository>(

@@ -3,7 +3,7 @@ import 'package:coda_test/core/error/failure.dart';
 import 'package:coda_test/core/use_cases/use_case.dart';
 import 'package:coda_test/features/clients/domain/entities/client.dart';
 import 'package:coda_test/features/clients/domain/use_cases/get_clients_use_case.dart';
-import 'package:coda_test/features/clients/presentation/bloc/client/client_bloc.dart';
+import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

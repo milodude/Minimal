@@ -1,14 +1,15 @@
 import 'dart:ui';
 
+import 'package:coda_test/features/clients/presentation/bloc/single_client/single_client_bloc.dart';
 import 'package:coda_test/features/clients/presentation/pages/base_clients_grid_view.dart';
+import 'package:coda_test/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_animations/stateless_animation/play_animation.dart';
 
 import '../../../../core/shared_widgets/yellow_bubble.dart';
-import '../bloc/client/client_bloc.dart';
+import '../bloc/clients/client_bloc.dart';
 import 'add_client_modal.dart';
-import 'clients_grid_view.dart';
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({Key? key}) : super(key: key);
@@ -231,13 +232,21 @@ class _ClientsPageState extends State<ClientsPage> {
         return SafeArea(
           child: Material(
             child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.all(20),
-                color: Colors.white,
-                child: const AddClientModal()),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.all(20),
+              color: Colors.white,
+              child: BlocProvider(
+                create: (context) => sl<SingleClientBloc>(),
+                child: Stack(
+                  children: const[
+                    AddClientModal(),
+                    BaseAddClientModal(),
+                  ],
+                )
+            ),
           ),
-        );
+        ),);
       },
     );
   }

@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:coda_test/features/clients/presentation/bloc/single_client/single_client_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/images.dart';
+import '../../domain/entities/client.dart';
 
 class AddClientModal extends StatefulWidget {
   const AddClientModal({
@@ -63,13 +66,15 @@ class _AddClientModalState extends State<AddClientModal> {
                   children: [
                     GestureDetector(
                       onTap: () async => pickImage(),
-                      child:image != null ? CircleAvatar(
-                        backgroundImage: FileImage(image!) ,
-                        radius: 76,
-                      ) : const CircleAvatar(
-                        backgroundImage: AssetImage(uploadImage),
-                        radius: 76,
-                      ),
+                      child: image != null
+                          ? CircleAvatar(
+                              backgroundImage: FileImage(image!),
+                              radius: 76,
+                            )
+                          : const CircleAvatar(
+                              backgroundImage: AssetImage(uploadImage),
+                              radius: 76,
+                            ),
                     ),
                   ],
                 ),
@@ -142,7 +147,14 @@ class _AddClientModalState extends State<AddClientModal> {
                       textStyle: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ClientData newClient = ClientData(
+                        firstName: firstNameInputController.text,
+                        lastName: lastNameInputController.text,
+                        email: mailInputController.text,
+                      );
+                      BlocProvider.of<SingleClientBloc>(context).add(AddSingleClient(clientToAdd: newClient));
+                    },
                     child: const Text(
                       'SAVE',
                       style: TextStyle(letterSpacing: 0.5),
@@ -154,6 +166,33 @@ class _AddClientModalState extends State<AddClientModal> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class BaseAddClientModal extends StatelessWidget {
+  const BaseAddClientModal({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<SingleClientBloc, SingleClientState>(
+      listener: (BuildContext context, SingleClientState state) {
+        if (state is SingleClientSaved) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.greenAccent,
+            content: Text('New client saved!'),
+          ));
+          Navigator.of(context).pop();
+        }
+
+        if (state is SingleClientError) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(state.errorMessage),
+          ));
+        }
+      },
+      child: Container(),
     );
   }
 }

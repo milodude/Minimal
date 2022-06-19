@@ -43,4 +43,9 @@ class ClientRepositoryImpl extends domain.ClientRepository {
       return Left(ServerFailure('Server error while sending the request'));
     }
   }
+  
+  @override
+  Future<Either<Failure, void>> deleteClient(int clientId) {
+    throw UnimplementedError();
+  }
 }

@@ -47,8 +47,28 @@ class ClientDataSource implements ClientRepository {
   @override
   Future<ClientModel> addClient(ClientModel clientModel) async {
      Uri uri = urlProvider.getUrl('/client/save', null);
-    print('Hizo todo el camino papa');
     var response = await httpClient.post(uri,body:json.encode(clientModel.toJson()), headers: {
+      'Content-type': 'application/json',
+      'Accept': '*/*',
+      'Access-Control-Allow-Origin': '*',
+    });
+    if (response.statusCode == 200) {
+      var decodedJson = json.decode(response.body);
+      if (decodedJson['success'] == true) {
+        ClientModel clientModel = ClientModel.fromJson(decodedJson['response']);
+        return clientModel;
+      } else {
+        throw ServerFailure(decodedJson['error']['message']);
+      }
+    } else {
+      throw ServerFailure('Something went wrong while saving a client');
+    }
+  }
+  
+  @override
+  Future<void> deleteClient(int clientId) async {
+           Uri uri = urlProvider.getUrl('/client/remove/$clientId', null);
+    var response = await httpClient.delete(uri, headers: {
       'Content-type': 'application/json',
       'Accept': '*/*',
       'Access-Control-Allow-Origin': '*',
@@ -56,21 +76,13 @@ class ClientDataSource implements ClientRepository {
     print('Status code ' + response.statusCode.toString());
     if (response.statusCode == 200) {
       var decodedJson = json.decode(response.body);
-      if (decodedJson['success'] == true) {
-        ClientModel clientModel = ClientModel.fromJson(decodedJson['response']);
-        return clientModel;
-      } else {
+      if (decodedJson['success'] != true) {
         print('No por success');
         throw ServerFailure(decodedJson['error']['message']);
       }
     } else {
-      print('Error  al hacer el post');
+      print('Error  al hacer el delete');
       throw ServerFailure('Something went wrong while saving a client');
     }
-  }
-  
-  @override
-  Future<void> deleteClient(int clientId) {
-    throw UnimplementedError();
   }
 }

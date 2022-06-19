@@ -20,7 +20,12 @@ void main() {
   ClientDataSource clientDataSource =
       ClientDataSource(httpClient: mockClient, urlProvider: mockUrlProvider);
   final tClientListResponse = json.decode(fixture('clients/client_list.json'));
-  ClientModel tClient =const ClientModel(id: 946, firstName: 'Matias', lastName: 'Raven', email: 'matiasRaven@agencycoda.com', caption: '70');
+  ClientModel tClient = const ClientModel(
+      id: 946,
+      firstName: 'Matias',
+      lastName: 'Raven',
+      email: 'matiasRaven@agencycoda.com',
+      caption: '70');
 
   List<ClientModel> _getList() {
     List<ClientModel> clientList = <ClientModel>[];
@@ -33,7 +38,7 @@ void main() {
   }
 
   void setUpHttpCallSuccess200() {
-    final uri = UrlProvider().getUrl('/client/list', { });
+    final uri = UrlProvider().getUrl('/client/list', {});
     when(mockClient.post(uri, body: json.encode({}), headers: {
       'Content-type': 'application/json',
       'Accept': '*/*',
@@ -58,7 +63,7 @@ void main() {
       //Act
       await clientDataSource.getClients();
       //Assert
-      verify(mockClient.post(any, body: json.encode({}),headers: {
+      verify(mockClient.post(any, body: json.encode({}), headers: {
         'Content-type': 'application/json',
         'Accept': '*/*',
         'Access-Control-Allow-Origin': '*',
@@ -84,7 +89,9 @@ void main() {
       when(mockUrlProvider.getUrl(any, any))
           .thenAnswer((realInvocation) => uri);
 
-      when(mockClient.post(uri, body: json.encode({}), headers: anyNamed('headers'))).thenAnswer(
+      when(mockClient.post(uri,
+              body: json.encode({}), headers: anyNamed('headers')))
+          .thenAnswer(
         (realInvocation) async =>
             http.Response('Something went wrong while logging in', 404),
       );
@@ -94,21 +101,24 @@ void main() {
       expect(() => call, throwsA(const TypeMatcher<ServerFailure>()));
     });
 
-     test('Should save a new client',() async {
+    test('Should save a new client', () async {
       //Arrange
       final uri = Uri.https(serverUrl, '/client/save', null);
       when(mockUrlProvider.getUrl(any, any))
           .thenAnswer((realInvocation) => uri);
-     
-      when(mockClient.post(uri, body: json.encode(tClient.toJson()), headers: anyNamed('headers'))).thenAnswer(
-        (realInvocation) async => Future.value(http.Response(fixture('clients/client_response.json'), 200)),
+
+      when(mockClient.post(uri,
+              body: json.encode(tClient.toJson()),
+              headers: anyNamed('headers')))
+          .thenAnswer(
+        (realInvocation) async => Future.value(
+            http.Response(fixture('clients/client_response.json'), 200)),
       );
       //Act
       final result = await clientDataSource.addClient(tClient);
       //Assert
       expect(result, equals(tClient));
     });
-
 
     test('Should throw a serverException when the respond is 404 or other',
         () async {
@@ -117,7 +127,10 @@ void main() {
       when(mockUrlProvider.getUrl(any, any))
           .thenAnswer((realInvocation) => uri);
 
-      when(mockClient.post(uri, body: json.encode(tClient.toJson()), headers: anyNamed('headers'))).thenAnswer(
+      when(mockClient.post(uri,
+              body: json.encode(tClient.toJson()),
+              headers: anyNamed('headers')))
+          .thenAnswer(
         (realInvocation) async =>
             http.Response('Something went wrong while saving the client', 404),
       );
@@ -125,6 +138,43 @@ void main() {
       final call = clientDataSource.addClient(tClient);
       //Assert
       expect(() => call, throwsA(const TypeMatcher<ServerFailure>()));
+    });
+
+    test('Should delete a client', () async {
+      //Arrange
+      int clientId = 70;
+      final uri = Uri.https(serverUrl, '/client/remove/$clientId', null);
+      when(mockUrlProvider.getUrl(any, any))
+          .thenAnswer((realInvocation) => uri);
+
+      when(mockClient.delete(uri, headers: anyNamed('headers'))).thenAnswer(
+        (realInvocation) async => Future.value(
+            http.Response(fixture('clients/delete_response.json'), 200)),
+      );
+      //Act
+      await clientDataSource.deleteClient(clientId);
+      //Assert
+      verify(mockClient.delete(uri, headers: {
+        'Content-type': 'application/json',
+        'Accept': '*/*',
+        'Access-Control-Allow-Origin': '*',
+      })).called(1);
+    });
+
+    test('Should throw a serverException when the respond is 404 or other',
+        () async {
+      //Arrange
+      int clientId = 70;
+      final uri = Uri.https(serverUrl, '/client/remove/$clientId', null);
+      when(mockUrlProvider.getUrl(any, any))
+          .thenAnswer((realInvocation) => uri);
+
+      when(mockClient.delete(uri, headers: anyNamed('headers'))).thenAnswer(
+        (realInvocation) async => http.Response('Something went wrong while saving the client', 404),
+      );
+      //Act
+      //Assert
+      expect(() => clientDataSource.deleteClient(clientId), throwsA(const TypeMatcher<ServerFailure>()));
     });
   });
 }

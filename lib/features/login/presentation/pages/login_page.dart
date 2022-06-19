@@ -32,17 +32,39 @@ class _LoginPageState extends State<LoginPage> {
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: BlocListener<UserBloc,UserState>(
+          child: BlocListener<UserBloc, UserState>(
             listener: (context, state) {
-              if(state.userinfo.accessToken.isNotEmpty){
+              if (state.userinfo.accessToken.isNotEmpty) {
                 Navigator.pushNamed(context, ClientsPage.routeName);
+              }
+              if (state is Error) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.redAccent,
+                  duration: const Duration(seconds: 2),
+                  content: Text(state.errorMessage),
+                ));
               }
             },
             child: Stack(
               children: [
-              YellowBubble(context: context, width: 300, heigth: 309, topPosition: -50,leftPosition: MediaQuery.of(context).size.width - 190),
-              YellowBubble(context: context, width: 100, heigth: 100, topPosition: MediaQuery.of(context).size.height / 2, leftPosition: -40),
-              YellowBubble(context: context, width: MediaQuery.of(context).size.width - 90, heigth: 305, topPosition: 600, leftPosition: 20),
+                YellowBubble(
+                    context: context,
+                    width: 300,
+                    heigth: 309,
+                    topPosition: -50,
+                    leftPosition: MediaQuery.of(context).size.width - 190),
+                YellowBubble(
+                    context: context,
+                    width: 100,
+                    heigth: 100,
+                    topPosition: MediaQuery.of(context).size.height / 2,
+                    leftPosition: -40),
+                YellowBubble(
+                    context: context,
+                    width: MediaQuery.of(context).size.width - 90,
+                    heigth: 305,
+                    topPosition: 600,
+                    leftPosition: 20),
                 Positioned.fill(
                     child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -175,7 +197,8 @@ class _LoginPageState extends State<LoginPage> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 50,),
+                            horizontal: 50,
+                          ),
                           fixedSize: const Size(296, 52),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50)),
@@ -183,7 +206,15 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
-                          _login(context);
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                          ReadContext(context).read<UserBloc>().add(LoginEvent(
+                                userName: emailInputController.text,
+                                password: passwordInputController.text,
+                              ));
                         },
                         child: const Text(
                           'LOG IN',
@@ -199,12 +230,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  void _login(BuildContext context) {
-    ReadContext(context).read<UserBloc>().add(LoginEvent(
-          userName: emailInputController.text,
-          password: passwordInputController.text,
-        ));
   }
 }

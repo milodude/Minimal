@@ -5,7 +5,6 @@ import '../widgets/search_no_results_found.dart';
 
 ///Widget that shows you a list of clients
 class ClientsGridView extends StatelessWidget {
-  ///Constructor that takes  a list of shows.
   final List<ClientData> clientsToShow;
 
   const ClientsGridView({
@@ -13,7 +12,6 @@ class ClientsGridView extends StatelessWidget {
     required this.clientsToShow,
   }) : super(key: key);
 
-  ///Parameter. A list of shows.
   @override
   Widget build(BuildContext context) {
     return clientsToShow.isEmpty
@@ -32,7 +30,26 @@ class ClientsGridView extends StatelessWidget {
                     clientsToShow[index].email,
                     style: const TextStyle(fontSize: 12),
                   ),
-                  trailing: const Icon(Icons.more_vert),
+                  trailing: PopupMenuButton(
+                    itemBuilder: (context) {
+                      return [
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Text('Edit'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: Text('Delete'),
+                        )
+                      ];
+                    },
+                    onSelected: (String value) {
+                      //Todo: Implement delete functionality
+                      if(value == 'delete'){
+
+                      }
+                    },
+                  ),
                 ),
               );
             });

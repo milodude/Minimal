@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/images.dart';
+import '../../../../core/shared_widgets/cancel_button.dart';
 import '../../domain/entities/client.dart';
 
 class AddClientModal extends StatefulWidget {
@@ -129,14 +130,7 @@ class _AddClientModalState extends State<AddClientModal> {
                     onTap: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        letterSpacing: 0.5,
-                        fontSize: 18,
-                        color: Color.fromRGBO(8, 8, 22, 0.38),
-                      ),
-                    ),
+                    child: const CancelButton(),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -166,33 +160,6 @@ class _AddClientModalState extends State<AddClientModal> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class BaseAddClientModal extends StatelessWidget {
-  const BaseAddClientModal({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<SingleClientBloc, SingleClientState>(
-      listener: (BuildContext context, SingleClientState state) {
-        if (state is SingleClientSaved) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.greenAccent,
-            content: Text('New client saved!'),
-          ));
-          Navigator.of(context).pop();
-        }
-
-        if (state is SingleClientError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.redAccent,
-            content: Text(state.errorMessage),
-          ));
-        }
-      },
-      child: Container(),
     );
   }
 }

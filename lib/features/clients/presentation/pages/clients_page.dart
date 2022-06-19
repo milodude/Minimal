@@ -10,6 +10,7 @@ import 'package:simple_animations/stateless_animation/play_animation.dart';
 import '../../../../core/shared_widgets/yellow_bubble.dart';
 import '../bloc/clients/client_bloc.dart';
 import 'add_client_modal.dart';
+import 'base_add_client_modal.dart';
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({Key? key}) : super(key: key);
@@ -240,8 +241,8 @@ class _ClientsPageState extends State<ClientsPage> {
                 create: (context) => sl<SingleClientBloc>(),
                 child: Stack(
                   children: const[
-                    AddClientModal(),
                     BaseAddClientModal(),
+                    AddClientModal(),
                   ],
                 )
             ),

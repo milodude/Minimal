@@ -1,6 +1,9 @@
+import 'package:coda_test/core/shared_widgets/cancel_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/client.dart';
+import '../bloc/clients/client_bloc.dart';
 import '../widgets/search_no_results_found.dart';
 
 ///Widget that shows you a list of clients
@@ -11,6 +14,51 @@ class ClientsGridView extends StatelessWidget {
     Key? key,
     required this.clientsToShow,
   }) : super(key: key);
+
+  Widget setupAlertDialoadContainer(BuildContext context, ClientData client) {
+    return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          "Are you sure you want to delete ${client.firstName}, ${client.lastName} client?",
+          style: const TextStyle(fontSize: 22),
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+                 GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const CancelButton()
+                  ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black,
+                  fixedSize: const Size(159, 40),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(35)),
+                  textStyle: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  var clientBloc = context.read<ClientBloc>();
+                  BlocProvider.of<ClientBloc>(context).add(
+                      ShowMoreInClientsList(
+                          clientsList: clientBloc.state.clientsData,
+                          clientsToShowList:
+                              clientBloc.state.clientDataToShow));
+                },
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(letterSpacing: 0.5),
+                ),
+              ),
+            ],
+          ),
+        ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +93,13 @@ class ClientsGridView extends StatelessWidget {
                     },
                     onSelected: (String value) {
                       //Todo: Implement delete functionality
-                      if(value == 'delete'){
-
+                      if (value == 'delete') {
+                        showDialog(
+                            useSafeArea: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return setupAlertDialoadContainer(context, clientsToShow[index]);
+                            });
                       }
                     },
                   ),

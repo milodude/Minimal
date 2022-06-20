@@ -187,7 +187,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                 ),
                                 onPressed: () {
                                   var clientBloc = context.read<ClientBloc>();
-                                  BlocProvider.of<ClientBloc>(context).add(
+                                  clientBloc.add(
                                       ShowMoreInClientsList(
                                           clientsList:
                                               clientBloc.state.clientsData,

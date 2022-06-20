@@ -12,7 +12,7 @@ class BaseClientsGridView extends StatelessWidget {
      return BlocBuilder<ClientBloc, ClientState>(
       builder: (context, state) {
         if (state is Initial) {
-          ReadContext(context).read<ClientBloc>().add(const GetClients());
+          context.read<ClientBloc>().add(const GetClients());
         } else if (state is Loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is Loaded) {

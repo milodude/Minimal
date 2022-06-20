@@ -27,12 +27,11 @@ class ClientsGridView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-                 GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const CancelButton()
-                  ),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const CancelButton()),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.black,
@@ -44,11 +43,7 @@ class ClientsGridView extends StatelessWidget {
                 ),
                 onPressed: () {
                   var clientBloc = context.read<ClientBloc>();
-                  BlocProvider.of<ClientBloc>(context).add(
-                      ShowMoreInClientsList(
-                          clientsList: clientBloc.state.clientsData,
-                          clientsToShowList:
-                              clientBloc.state.clientDataToShow));
+                  clientBloc.add(DeleteClient(clientId: client.id));
                 },
                 child: const Text(
                   'Yes',
@@ -98,7 +93,37 @@ class ClientsGridView extends StatelessWidget {
                             useSafeArea: true,
                             context: context,
                             builder: (BuildContext context) {
-                              return setupAlertDialoadContainer(context, clientsToShow[index]);
+                              return BlocListener<ClientBloc, ClientState>(
+                                listener: (context, state) {
+                                  if (state is Error) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.redAccent,
+                                      duration: const Duration(seconds: 5),
+                                      content: Text(state.errorMessage),
+                                    ));
+                                  }
+                                  if (state is Saved) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      backgroundColor: Colors.greenAccent,
+                                      duration: Duration(seconds: 5),
+                                      content: Text('Client Deleted!'),
+                                    ));
+                                    context
+                                        .read<ClientBloc>()
+                                        .add(const GetClients());
+                                  }
+                                },
+                                child: BlocBuilder<ClientBloc, ClientState>(
+                                  builder: (context, state) {
+                                    return setupAlertDialoadContainer(
+                                        context, clientsToShow[index]);
+                                  },
+                                ),
+                              );
                             });
                       }
                     },

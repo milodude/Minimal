@@ -57,8 +57,21 @@ class ClientRepositoryImpl extends domain.ClientRepository {
   }
   
   @override
-  Future<Either<Failure, ClientData>> editClient(ClientData clientData) {
-    // TODO: implement editClient
-    throw UnimplementedError();
+  Future<Either<Failure, ClientData>> editClient(ClientData clientData) async {
+    try {
+      var clientModel = ClientModel(
+        id: clientData.id,
+        firstName: clientData.firstName,
+        lastName: clientData.lastName,
+        email: clientData.email,
+        caption: clientData.caption,
+      );
+      var result = await clientDataSource.editClient(clientModel);
+      return Right(result);
+    } on ServerFailure catch (e) {
+      return Left(ServerFailure('Server error while sending the request: $e'));
+    } catch (e) {
+      return Left(ServerFailure('Server error while sending the request'));
+    }
   }
 }

@@ -9,6 +9,7 @@ abstract class ClientRepository {
   Future<List<ClientModel>> getClients();
   Future<ClientModel> addClient(ClientModel clientModel);
   Future<void> deleteClient(int clientId);
+  Future<ClientModel> editClient(ClientModel clientModel);
 }
 
 class ClientDataSource implements ClientRepository {
@@ -81,5 +82,11 @@ class ClientDataSource implements ClientRepository {
     } else {
       throw ServerFailure('Something went wrong while saving a client');
     }
+  }
+  
+  @override
+  Future<ClientModel> editClient(ClientModel clientModel) {
+    // TODO: implement editClient
+    throw UnimplementedError();
   }
 }

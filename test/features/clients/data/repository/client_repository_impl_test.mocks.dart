@@ -58,4 +58,9 @@ class MockClientDataSource extends _i1.Mock implements _i5.ClientDataSource {
       (super.noSuchMethod(Invocation.method(#deleteClient, [clientId]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
+  @override
+  _i6.Future<_i4.ClientModel> editClient(_i4.ClientModel? clientModel) =>
+      (super.noSuchMethod(Invocation.method(#editClient, [clientModel]),
+              returnValue: Future<_i4.ClientModel>.value(_FakeClientModel_2()))
+          as _i6.Future<_i4.ClientModel>);
 }

@@ -17,6 +17,7 @@ void main() {
   ClientRepositoryImpl clientRepositoryImpl =
       ClientRepositoryImpl(clientDataSource: mockClientDataSource);
   final tClientListResponse = json.decode(fixture('clients/client_list.json'));
+
   const int clientId = 70;
 
   List<ClientModel> _getList() {
@@ -30,6 +31,8 @@ void main() {
   }
 
   group('Client repository impl tests: ', () {
+    final tClient = _getList().first;
+
     testWidgets('Should  get a list of clients', (tester) async {
       //ARRANGE
       final tClientListModel = _getList();
@@ -60,7 +63,6 @@ void main() {
 
     testWidgets('Should add a client', (tester) async {
       //ARRANGE
-      final tClient = _getList().first;
       when(mockClientDataSource.addClient(tClient))
           .thenAnswer((realInvocation) async => Future.value(tClient));
       //ACT
@@ -71,6 +73,33 @@ void main() {
       result.fold((left) => fail('test failed'), (right) {
         expect(right, equals(tClient));
       });
+    });
+
+    testWidgets('Should edit a client', (tester) async {
+      //ARRANGE
+      when(mockClientDataSource.editClient(tClient))
+          .thenAnswer((realInvocation) async => Future.value(tClient));
+      //ACT
+      var result = await clientRepositoryImpl.editClient(tClient);
+      //ASSERT
+      verify(mockClientDataSource.editClient(tClient));
+      expect(true, result.isRight());
+      result.fold((left) => fail('test failed'), (right) {
+        expect(right, equals(tClient));
+      });
+    });
+
+    testWidgets('Should get a failure when editing if edition fails',
+        (tester) async {
+      //ARRANGE
+      when(mockClientDataSource.editClient(tClient)).thenThrow(
+          (realInvocation) async =>
+              Future.value(ServerFailure('Error Message')));
+      //ACT
+      var result = await clientRepositoryImpl.editClient(tClient);
+      //ASSERT
+      verify(mockClientDataSource.editClient(tClient));
+      expect(true, result.isLeft());
     });
 
     testWidgets('Should delete a client', (tester) async {

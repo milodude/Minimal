@@ -35,6 +35,10 @@ class AddClientsToShow extends ClientState {
   const AddClientsToShow(this.clients, this.clientsToShow):super(clients, clientsToShow);
 }
 
+class Saved extends ClientState{
+  const Saved(super.clientsData, super.clientDataToShow);
+}
+
 class Error extends ClientState{
    final String errorMessage;
 

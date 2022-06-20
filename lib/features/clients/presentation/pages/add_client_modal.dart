@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:coda_test/features/clients/presentation/bloc/single_client/single_client_bloc.dart';
+import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -147,7 +147,7 @@ class _AddClientModalState extends State<AddClientModal> {
                         lastName: lastNameInputController.text,
                         email: mailInputController.text,
                       );
-                      BlocProvider.of<SingleClientBloc>(context).add(AddSingleClient(clientToAdd: newClient));
+                      BlocProvider.of<ClientBloc>(context).add(AddClient(clientToAdd: newClient));
                     },
                     child: const Text(
                       'SAVE',

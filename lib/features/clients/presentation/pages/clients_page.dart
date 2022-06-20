@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:coda_test/features/clients/presentation/bloc/single_client/single_client_bloc.dart';
 import 'package:coda_test/features/clients/presentation/pages/base_clients_grid_view.dart';
 import 'package:coda_test/injection_container.dart';
 import 'package:flutter/material.dart';
@@ -238,7 +237,7 @@ class _ClientsPageState extends State<ClientsPage> {
               padding: const EdgeInsets.all(20),
               color: Colors.white,
               child: BlocProvider(
-                create: (context) => sl<SingleClientBloc>(),
+                create: (context) => sl<ClientBloc>(),
                 child: Stack(
                   children: const[
                     BaseAddClientModal(),

@@ -25,8 +25,8 @@ Future<void> init() async {
   // Bloc - No tienen que ser singletons por que estan muy cerca de la parte de la UI, por ejemplo puede abrir y volver a la
   // pagina anterior. Si llegamos a a hacer un dispose puede que hayamos eliminado ese singleton y va a traernos un error.
   sl.registerFactory(() => UserBloc(userLoginUseCase: sl()));
-  sl.registerFactory(() => ClientBloc(getClientsUseCase: sl()));
-  sl.registerFactory(() => SingleClientBloc(addClientUseCase: sl()));
+  sl.registerFactory(() => ClientBloc(getClientsUseCase: sl(), addClientUseCase: sl()));
+  // sl.registerFactory(() => SingleClientBloc(addClientUseCase: sl()));
 
 
   //Al no mantener estados en el caso de uso, no es necesario tener una factoria

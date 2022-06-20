@@ -1,11 +1,7 @@
 part of 'client_bloc.dart';
 
 abstract class ClientEvent extends Equatable {
-   final List<ClientData>? clients;
-  final List<ClientData>? clientsToShow;
   const ClientEvent(
-     this.clients,
-     this.clientsToShow
   );
 
   @override
@@ -13,13 +9,20 @@ abstract class ClientEvent extends Equatable {
 }
 //revisar lo que le paso a la clase base de clients..
 class GetClients extends ClientEvent{
-    const GetClients() : super(null, null);
+    const GetClients() : super();
 }
 
 class ShowMoreInClientsList extends ClientEvent{
   final List<ClientData> clientsList;
   final List<ClientData> clientsToShowList;
 
-  const ShowMoreInClientsList({required this.clientsList,required this.clientsToShowList}) : super(clientsList, clientsToShowList);
+  const ShowMoreInClientsList({required this.clientsList,required this.clientsToShowList}) : super();
 
+}
+
+class AddClient extends ClientEvent {
+  final ClientData clientToAdd;
+  const AddClient({
+    required this.clientToAdd,
+  });
 }

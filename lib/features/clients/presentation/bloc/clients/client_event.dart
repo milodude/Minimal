@@ -24,7 +24,7 @@ class AddClient extends ClientEvent {
   final ClientData clientToAdd;
   const AddClient({
     required this.clientToAdd,
-  });
+  }) : super();
 }
 
 class DeleteClient extends ClientEvent {

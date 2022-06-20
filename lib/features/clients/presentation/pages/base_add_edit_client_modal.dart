@@ -1,30 +1,46 @@
 import 'dart:io';
 
-import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
+
 import '../../../../core/constants/images.dart';
 import '../../../../core/shared_widgets/cancel_button.dart';
 import '../../domain/entities/client.dart';
 
-class AddClientModal extends StatefulWidget {
-  const AddClientModal({
+class BaseAddEditClientModal extends StatefulWidget {
+  final String title;
+  final ClientData? client;
+
+  const BaseAddEditClientModal({
     Key? key,
+    required this.title,
+    this.client,
   }) : super(key: key);
 
   @override
-  State<AddClientModal> createState() => _AddClientModalState();
+  State<BaseAddEditClientModal> createState() => _BAddClientModalState();
 }
 
-class _AddClientModalState extends State<AddClientModal> {
+class _BAddClientModalState extends State<BaseAddEditClientModal> {
   final firstNameInputController = TextEditingController();
   final lastNameInputController = TextEditingController();
   final mailInputController = TextEditingController();
 
   File? image;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.client != null) {
+      firstNameInputController.text = widget.client!.firstName.toString();
+      lastNameInputController.text = widget.client!.lastName.toString();
+      mailInputController.text = widget.client!.email.toString();
+    }
+  }
 
   Future pickImage() async {
     try {
@@ -41,6 +57,7 @@ class _AddClientModalState extends State<AddClientModal> {
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
       child: Center(
@@ -52,10 +69,10 @@ class _AddClientModalState extends State<AddClientModal> {
                 padding: const EdgeInsets.only(left: 32),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Add new client',
-                      style: TextStyle(fontSize: 27),
+                      widget.title,
+                      style: const TextStyle(fontSize: 27),
                     ),
                   ],
                 ),
@@ -142,12 +159,20 @@ class _AddClientModalState extends State<AddClientModal> {
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
+                      final clientBloc = context.read<ClientBloc>();
                       ClientData newClient = ClientData(
+                        id: widget.client == null ? 0 : widget.client!.id,
                         firstName: firstNameInputController.text,
                         lastName: lastNameInputController.text,
                         email: mailInputController.text,
                       );
-                      BlocProvider.of<ClientBloc>(context).add(AddClient(clientToAdd: newClient));
+                      if (widget.client != null) {
+                        clientBloc.add(EditClient(clientToEdit: newClient));
+                      } else {
+                        clientBloc.add(AddClient(clientToAdd: newClient));
+                      }
+                      clientBloc.add(const GetClients());
+                      Navigator.of(context).pop();
                     },
                     child: const Text(
                       'SAVE',

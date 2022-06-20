@@ -27,7 +27,6 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   }) : super(Initial()) {
     on<ClientEvent>((event, emit) async {
       if (event is GetClients) {
-        print('Pido  clientes');
         emit(Loading());
         final result = await getClientsUseCase(NoParams());
         result.fold(
@@ -49,13 +48,26 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       }
 
       if (event is AddClient) {
+        List<ClientData> updatedList = <ClientData>[];
         emit(Loading());
         final result =
             await addClientUseCase(ClientParams(client: event.clientToAdd));
+        var newList = await getClientsUseCase(NoParams());
+         newList.fold(
+          (left) => emit(Error(errorMessage: left.toString())),
+          (right) {
+            updatedList = right;
+            right.sort((a, b) => b.id.compareTo(a.id));
+            emit(Loaded(right, right.take(5).toList()));
+          },
+        );
+
         result.fold(
           (left) => emit(Error(errorMessage: left.toString())),
           (right) {
-            emit(Saved(state.clientsData, state.clientDataToShow));
+            updatedList.sort((a, b) => b.id.compareTo(a.id));
+            var newState = state.copyWith(clientsData: updatedList,clientDataToShow: updatedList.take(5).toList());
+            emit(Saved(newState.clientsData, newState.clientDataToShow));
           },
         );
       }

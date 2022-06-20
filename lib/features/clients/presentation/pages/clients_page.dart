@@ -1,15 +1,13 @@
 import 'dart:ui';
 
 import 'package:coda_test/features/clients/presentation/pages/base_clients_grid_view.dart';
-import 'package:coda_test/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_animations/stateless_animation/play_animation.dart';
 
 import '../../../../core/shared_widgets/yellow_bubble.dart';
 import '../bloc/clients/client_bloc.dart';
-import 'add_client_modal.dart';
-import 'base_add_client_modal.dart';
+import 'base_add_edit_client_modal.dart';
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({Key? key}) : super(key: key);
@@ -145,7 +143,41 @@ class _ClientsPageState extends State<ClientsPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
-                                  _displayDialog(context);
+                                  showGeneralDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    transitionDuration:
+                                        const Duration(milliseconds: 300),
+                                    transitionBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: ScaleTransition(
+                                          scale: animation,
+                                          child: child,
+                                        ),
+                                      );
+                                    },
+                                    pageBuilder: (context, animation,
+                                        secondaryAnimation) {
+                                      return SafeArea(
+                                        child: Material(
+                                          child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: MediaQuery.of(context)
+                                                  .size
+                                                  .height,
+                                              padding: const EdgeInsets.all(20),
+                                              color: Colors.white,
+                                              child: const BaseAddEditClientModal(
+                                                title: 'Add new client',
+                                              )),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 child: const Text(
                                   'ADD NEW',
@@ -187,12 +219,10 @@ class _ClientsPageState extends State<ClientsPage> {
                                 ),
                                 onPressed: () {
                                   var clientBloc = context.read<ClientBloc>();
-                                  clientBloc.add(
-                                      ShowMoreInClientsList(
-                                          clientsList:
-                                              clientBloc.state.clientsData,
-                                          clientsToShowList: clientBloc
-                                              .state.clientDataToShow));
+                                  clientBloc.add(ShowMoreInClientsList(
+                                      clientsList: clientBloc.state.clientsData,
+                                      clientsToShowList:
+                                          clientBloc.state.clientDataToShow));
                                 },
                                 child: const Text(
                                   'LOAD MORE',
@@ -214,40 +244,33 @@ class _ClientsPageState extends State<ClientsPage> {
     );
   }
 
-  _displayDialog(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: false,
-      transitionDuration: const Duration(milliseconds: 300),
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation,
-          child: ScaleTransition(
-            scale: animation,
-            child: child,
-          ),
-        );
-      },
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return SafeArea(
-          child: Material(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.all(20),
-              color: Colors.white,
-              child: BlocProvider(
-                create: (context) => sl<ClientBloc>(),
-                child: Stack(
-                  children: const[
-                    BaseAddClientModal(),
-                    AddClientModal(title: 'Add new client',),
-                  ],
-                )
-            ),
-          ),
-        ),);
-      },
-    );
-  }
+//   _displayDialog(BuildContext context) {
+//     showGeneralDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       transitionDuration: const Duration(milliseconds: 300),
+//       transitionBuilder: (context, animation, secondaryAnimation, child) {
+//         return FadeTransition(
+//           opacity: animation,
+//           child: ScaleTransition(
+//             scale: animation,
+//             child: child,
+//           ),
+//         );
+//       },
+//       pageBuilder: (context, animation, secondaryAnimation) {
+//         return SafeArea(
+//           child: Material(
+//             child: Container(
+//               width: MediaQuery.of(context).size.width,
+//               height: MediaQuery.of(context).size.height,
+//               padding: const EdgeInsets.all(20),
+//               color: Colors.white,
+//               child: const AddClientModal(title: 'Add new client',)
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
 }

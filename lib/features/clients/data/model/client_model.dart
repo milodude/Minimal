@@ -26,4 +26,11 @@ class ClientModel extends ClientData {
         'email': email,
         'caption': caption
       };
+  
+  Map<String, dynamic> addClientToJson() => {
+        'firstname': firstName,
+        'lastname': lastName,
+        'email': email,
+        'caption': caption
+      };
 }

@@ -72,7 +72,7 @@ void main() {
   });
 
   group('Client data source tests: ', () {
-    testWidgets('Should send a request for  clients without any issues',
+    testWidgets('Should send a request for clients without any issues',
         (tester) async {
       //Arrange
       setUpHttpCallSuccess200();
@@ -82,7 +82,7 @@ void main() {
       expect(result, equals(_getList()));
     });
 
-    test('Should throw a serverException when the respond is 404 or other',
+    test('Should throw a serverException when the respond is 404 or other when getting a list of clients',
         () async {
       //Arrange
       final uri = Uri.https(serverUrl, '/client/list', null);
@@ -93,7 +93,7 @@ void main() {
               body: json.encode({}), headers: anyNamed('headers')))
           .thenAnswer(
         (realInvocation) async =>
-            http.Response('Something went wrong while logging in', 404),
+            http.Response('Something went wrong while getting clients', 404),
       );
       //Act
       final call = clientDataSource.getClients();
@@ -108,7 +108,7 @@ void main() {
           .thenAnswer((realInvocation) => uri);
 
       when(mockClient.post(uri,
-              body: json.encode(tClient.toJson()),
+              body: json.encode(tClient.addClientToJson()),
               headers: anyNamed('headers')))
           .thenAnswer(
         (realInvocation) async => Future.value(
@@ -120,7 +120,7 @@ void main() {
       expect(result, equals(tClient));
     });
 
-    test('Should throw a serverException when the respond is 404 or other',
+    test('Should throw a serverException when the respond is 404 or other  when adding',
         () async {
       //Arrange
       final uri = Uri.https(serverUrl, '/client/save', null);
@@ -128,7 +128,7 @@ void main() {
           .thenAnswer((realInvocation) => uri);
 
       when(mockClient.post(uri,
-              body: json.encode(tClient.toJson()),
+              body: json.encode(tClient.addClientToJson()),
               headers: anyNamed('headers')))
           .thenAnswer(
         (realInvocation) async =>
@@ -161,7 +161,7 @@ void main() {
       })).called(1);
     });
 
-    test('Should throw a serverException when the respond is 404 or other',
+    test('Should throw a serverException when the respond is 404 or other when removing',
         () async {
       //Arrange
       int clientId = 70;
@@ -175,6 +175,40 @@ void main() {
       //Act
       //Assert
       expect(() => clientDataSource.deleteClient(clientId), throwsA(const TypeMatcher<ServerFailure>()));
+    });
+
+    test('Should edit a client', () async {
+      //Arrange
+      final uri = Uri.https(serverUrl, '/client/save', null);
+      when(mockUrlProvider.getUrl(any, any))
+          .thenAnswer((realInvocation) => uri);
+
+      when(mockClient.post(uri,
+              body: json.encode(tClient.toJson()),
+              headers: anyNamed('headers')))
+          .thenAnswer(
+        (realInvocation) async => Future.value(
+            http.Response(fixture('clients/client_response.json'), 200)),
+      );
+      //Act
+      final result = await clientDataSource.editClient(tClient);
+      //Assert
+      expect(result, equals(tClient));
+    });
+
+    test('Should throw a serverException when the respond is 404 or other when editing',
+        () async {
+      //Arrange
+      final uri = Uri.https(serverUrl, '/client/save', {});
+      when(mockUrlProvider.getUrl(any, any))
+          .thenAnswer((realInvocation) => uri);
+
+      when(mockClient.post(uri, body: json.encode(tClient.toJson()),headers: anyNamed('headers'))).thenAnswer(
+        (realInvocation) async => http.Response('Something went wrong while saving the client', 404),
+      );
+      //Act
+      //Assert
+      expect(() => clientDataSource.editClient(tClient), throwsA(const TypeMatcher<ServerFailure>()));
     });
   });
 }

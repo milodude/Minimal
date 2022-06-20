@@ -89,6 +89,24 @@ void main() {
           deleteClientUseCase: mockDeleteClientUseCase);
     });
 
+    blocTest<ClientBloc, ClientState>(
+        'should delete a client',
+        setUp: () => when(mockDeleteClientUseCase.call(tClientData.first.id)).thenAnswer(
+            (realInvocation) async => Future.value(const Right(null))),
+        build: () {
+          return bloc;
+        },
+        act: (bloc) {
+          bloc.add(DeleteClient(clientId: tClientData.first.id));
+        },
+        expect: () => <ClientState>[
+              Loading(),
+              Saved(bloc.state.clientsData,
+                  bloc.state.clientsData.take(5).toList()),
+            ],
+        tearDown: bloc.close,
+        wait: const Duration(milliseconds: 500));
+
     blocTest('emits [] when nothing is added',
         build: () => bloc,
         expect: () => [],
@@ -130,21 +148,5 @@ void main() {
         wait: const Duration(milliseconds: 500));
   });
 
-  blocTest<ClientBloc, ClientState>(
-        'should delete a client',
-        setUp: () => when(mockDeleteClientUseCase.call(tClientData.first.id)).thenAnswer(
-            (realInvocation) async => Future.value(const Right(null))),
-        build: () {
-          return bloc;
-        },
-        act: (bloc) {
-          bloc.add(DeleteClient(clientId: tClientData.first.id));
-        },
-        expect: () => <ClientState>[
-              Loading(),
-              Saved(bloc.state.clientsData,
-                  bloc.state.clientsData.take(5).toList()),
-            ],
-        tearDown: bloc.close,
-        wait: const Duration(milliseconds: 500));
+  
 }

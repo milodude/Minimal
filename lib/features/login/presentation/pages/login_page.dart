@@ -11,7 +11,7 @@ import '../../../clients/presentation/pages/clients_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-  static const String routeName = '/loginPage';
+  static const String routeName = '/';
 
   @override
   State<LoginPage> createState() => _LoginPageState();

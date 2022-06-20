@@ -7,6 +7,7 @@ import 'features/clients/data/repository/client_repository_impl.dart';
 import 'features/clients/domain/repository/client_repository.dart'
     as client_domain;
 import 'features/clients/domain/use_cases/add_client_use_case.dart';
+import 'features/clients/domain/use_cases/delete_client_use_case.dart';
 import 'features/clients/domain/use_cases/get_clients_use_case.dart';
 import 'features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'features/login/data/data_source/user_data_source.dart';
@@ -24,7 +25,7 @@ Future<void> init() async {
   // Bloc - No tienen que ser singletons por que estan muy cerca de la parte de la UI, por ejemplo puede abrir y volver a la
   // pagina anterior. Si llegamos a a hacer un dispose puede que hayamos eliminado ese singleton y va a traernos un error.
   sl.registerFactory(() => UserBloc(userLoginUseCase: sl()));
-  sl.registerFactory(() => ClientBloc(getClientsUseCase: sl(), addClientUseCase: sl()));
+  sl.registerFactory(() => ClientBloc(getClientsUseCase: sl(), addClientUseCase: sl(), deleteClientUseCase: sl()));
   // sl.registerFactory(() => SingleClientBloc(addClientUseCase: sl()));
 
 
@@ -35,6 +36,8 @@ Future<void> init() async {
       () => GetClientsUseCase(clientRepository: sl()));
   sl.registerLazySingleton<AddClientUseCase>(
       () => AddClientUseCase(clientRepository: sl()));
+  sl.registerLazySingleton<DeleteClientUseCase>(
+      () => DeleteClientUseCase(clientRepository: sl()));
 
   //!Repository
   sl.registerLazySingleton<domain.UserRepository>(

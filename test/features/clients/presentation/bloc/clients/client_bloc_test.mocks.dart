@@ -9,6 +9,8 @@ import 'package:coda_test/core/use_cases/use_case.dart' as _i8;
 import 'package:coda_test/features/clients/domain/entities/client.dart' as _i7;
 import 'package:coda_test/features/clients/domain/repository/client_repository.dart'
     as _i2;
+import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart'
+    as _i10;
 import 'package:coda_test/features/clients/domain/use_cases/get_clients_use_case.dart'
     as _i4;
 import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart'
@@ -74,4 +76,29 @@ class MockShowMoreInClientsList extends _i1.Mock
   List<Object> get props =>
       (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object>[])
           as List<Object>);
+}
+
+/// A class which mocks [AddClientUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAddClientUseCase extends _i1.Mock implements _i10.AddClientUseCase {
+  MockAddClientUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.ClientRepository get clientRepository =>
+      (super.noSuchMethod(Invocation.getter(#clientRepository),
+          returnValue: _FakeClientRepository_0()) as _i2.ClientRepository);
+  @override
+  set clientRepository(_i2.ClientRepository? _clientRepository) => super
+      .noSuchMethod(Invocation.setter(#clientRepository, _clientRepository),
+          returnValueForMissingStub: null);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i7.ClientData>> call(
+          _i10.ClientParams? params) =>
+      (super.noSuchMethod(Invocation.method(#call, [params]),
+          returnValue: Future<_i3.Either<_i6.Failure, _i7.ClientData>>.value(
+              _FakeEither_1<_i6.Failure, _i7.ClientData>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i7.ClientData>>);
 }

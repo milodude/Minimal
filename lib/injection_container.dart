@@ -9,7 +9,6 @@ import 'features/clients/domain/repository/client_repository.dart'
 import 'features/clients/domain/use_cases/add_client_use_case.dart';
 import 'features/clients/domain/use_cases/get_clients_use_case.dart';
 import 'features/clients/presentation/bloc/clients/client_bloc.dart';
-import 'features/clients/presentation/bloc/single_client/single_client_bloc.dart';
 import 'features/login/data/data_source/user_data_source.dart';
 import 'features/login/data/repository/user_repository_impl.dart';
 import 'features/login/domain/repository/user_repository.dart' as domain;

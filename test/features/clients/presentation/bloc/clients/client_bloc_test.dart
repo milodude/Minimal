@@ -3,6 +3,7 @@ import 'package:coda_test/core/error/failure.dart';
 import 'package:coda_test/core/use_cases/use_case.dart';
 import 'package:coda_test/features/clients/domain/entities/client.dart';
 import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart';
+import 'package:coda_test/features/clients/domain/use_cases/delete_client_use_case.dart';
 import 'package:coda_test/features/clients/domain/use_cases/get_clients_use_case.dart';
 import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -12,36 +13,80 @@ import 'package:mockito/mockito.dart';
 
 import 'client_bloc_test.mocks.dart';
 
-
-@GenerateMocks([GetClientsUseCase, ShowMoreInClientsList, AddClientUseCase])
+@GenerateMocks([
+  GetClientsUseCase,
+  ShowMoreInClientsList,
+  AddClientUseCase,
+  DeleteClientUseCase
+])
 void main() {
   MockGetClientsUseCase mockGetClientsUseCase = MockGetClientsUseCase();
   MockAddClientUseCase mockAddClientUseCase = MockAddClientUseCase();
-  
-  late ClientBloc bloc = ClientBloc(getClientsUseCase: mockGetClientsUseCase, addClientUseCase: mockAddClientUseCase);
+  MockDeleteClientUseCase mockDeleteClientUseCase = MockDeleteClientUseCase();
+
+  late ClientBloc bloc = ClientBloc(
+    getClientsUseCase: mockGetClientsUseCase,
+    addClientUseCase: mockAddClientUseCase,
+    deleteClientUseCase: mockDeleteClientUseCase,
+  );
 
   List<ClientData> tClientData = <ClientData>[
     const ClientData(
-        id: 70, firstName: 'firstName', lastName: 'lastName', email: 'email',caption: ''),
+        id: 70,
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 1, firstName: 'firstName1', lastName: 'lastName1', email: 'email', caption: ''),
+        id: 1,
+        firstName: 'firstName1',
+        lastName: 'lastName1',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 2, firstName: 'firstName2', lastName: 'lastName2', email: 'email', caption: ''),
+        id: 2,
+        firstName: 'firstName2',
+        lastName: 'lastName2',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 3, firstName: 'firstName3', lastName: 'lastName3', email: 'email', caption: ''),
+        id: 3,
+        firstName: 'firstName3',
+        lastName: 'lastName3',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 4, firstName: 'firstName4', lastName: 'lastName4', email: 'email', caption: ''),
+        id: 4,
+        firstName: 'firstName4',
+        lastName: 'lastName4',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 5, firstName: 'firstName5', lastName: 'lastName5', email: 'email', caption: ''),
+        id: 5,
+        firstName: 'firstName5',
+        lastName: 'lastName5',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 6, firstName: 'firstName6', lastName: 'lastName6', email: 'email', caption: ''),
+        id: 6,
+        firstName: 'firstName6',
+        lastName: 'lastName6',
+        email: 'email',
+        caption: ''),
     const ClientData(
-        id: 7, firstName: 'firstName7', lastName: 'lastName7', email: 'email', caption: ''),
+        id: 7,
+        firstName: 'firstName7',
+        lastName: 'lastName7',
+        email: 'email',
+        caption: ''),
   ];
   group('Client BLOC: ', () {
     setUp(() {
       bloc.close();
-      bloc = ClientBloc(getClientsUseCase: mockGetClientsUseCase, addClientUseCase: mockAddClientUseCase);
+      bloc = ClientBloc(
+          getClientsUseCase: mockGetClientsUseCase,
+          addClientUseCase: mockAddClientUseCase,
+          deleteClientUseCase: mockDeleteClientUseCase);
     });
 
     blocTest('emits [] when nothing is added',
@@ -79,9 +124,27 @@ void main() {
               Loading(),
               Loaded(bloc.state.clientsData,
                   bloc.state.clientsData.take(5).toList()),
-              Loaded(bloc.state.clientsData, bloc.state.clientsData),  
+              Loaded(bloc.state.clientsData, bloc.state.clientsData),
             ],
         tearDown: bloc.close,
         wait: const Duration(milliseconds: 500));
   });
+
+  blocTest<ClientBloc, ClientState>(
+        'should delete a client',
+        setUp: () => when(mockDeleteClientUseCase.call(tClientData.first.id)).thenAnswer(
+            (realInvocation) async => Future.value(const Right(null))),
+        build: () {
+          return bloc;
+        },
+        act: (bloc) {
+          bloc.add(DeleteClient(clientId: tClientData.first.id));
+        },
+        expect: () => <ClientState>[
+              Loading(),
+              Saved(bloc.state.clientsData,
+                  bloc.state.clientsData.take(5).toList()),
+            ],
+        tearDown: bloc.close,
+        wait: const Duration(milliseconds: 500));
 }

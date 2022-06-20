@@ -5,6 +5,7 @@ import 'package:coda_test/core/use_cases/use_case.dart';
 import 'package:coda_test/features/clients/domain/entities/client.dart';
 import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart';
 
+import '../../../domain/use_cases/delete_client_use_case.dart';
 import '../../../domain/use_cases/get_clients_use_case.dart' as use_case;
 
 part 'client_event.dart';
@@ -13,10 +14,12 @@ part 'client_state.dart';
 class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final use_case.GetClientsUseCase getClientsUseCase;
   final AddClientUseCase addClientUseCase;
-  
+  final DeleteClientUseCase deleteClientUseCase;
+
   ClientBloc({
     required this.getClientsUseCase,
     required this.addClientUseCase,
+    required this.deleteClientUseCase,
   }) : super(Initial()) {
     on<ClientEvent>((event, emit) async {
       if (event is GetClients) {
@@ -31,17 +34,39 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         );
       }
       if (event is ShowMoreInClientsList) {
-        List<ClientData> filteredLst =
-            List.from(state.clientsData.where((value) => !state.clientDataToShow.contains(value)));
+        List<ClientData> filteredLst = List.from(state.clientsData
+            .where((value) => !state.clientDataToShow.contains(value)));
         filteredLst.sort(((a, b) => b.id.compareTo(a.id)));
-        var addedValues =[state.clientDataToShow, filteredLst.take(5)].expand((x) => x).toList();
+        var addedValues = [state.clientDataToShow, filteredLst.take(5)]
+            .expand((x) => x)
+            .toList();
         emit(Loaded(state.clientsData, addedValues));
       }
 
       if (event is AddClient) {
         emit(Loading());
-        final result = await addClientUseCase(ClientParams(client: event.clientToAdd));
-        emit(Saved(state.clientsData, state.clientDataToShow));
+        final result =
+            await addClientUseCase(ClientParams(client: event.clientToAdd));
+        result.fold(
+          (left) => emit(Error(errorMessage: left.toString())),
+          (right) {
+            emit(Saved(state.clientsData, state.clientDataToShow));
+          },
+        );
+      }
+
+      if (event is DeleteClient) {
+        emit(Loading());
+        final result = await deleteClientUseCase(event.clientId);
+
+        result.fold(
+          (left) => emit(Error(errorMessage: left.toString())),
+          (right) {
+             List<ClientData> listWithoutDeleted = List.from(state.clientDataToShow
+            .where((value) => value.id != event.clientId));
+            emit(Saved(state.clientsData, listWithoutDeleted));
+          },
+        );
       }
     });
   }

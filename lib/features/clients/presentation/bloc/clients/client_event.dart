@@ -26,3 +26,10 @@ class AddClient extends ClientEvent {
     required this.clientToAdd,
   });
 }
+
+class DeleteClient extends ClientEvent {
+  final int clientId;
+  const DeleteClient({
+    required this.clientId,
+  });
+}

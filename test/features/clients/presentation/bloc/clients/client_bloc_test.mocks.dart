@@ -11,6 +11,8 @@ import 'package:coda_test/features/clients/domain/repository/client_repository.d
     as _i2;
 import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart'
     as _i10;
+import 'package:coda_test/features/clients/domain/use_cases/delete_client_use_case.dart'
+    as _i11;
 import 'package:coda_test/features/clients/domain/use_cases/get_clients_use_case.dart'
     as _i4;
 import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart'
@@ -101,4 +103,29 @@ class MockAddClientUseCase extends _i1.Mock implements _i10.AddClientUseCase {
           returnValue: Future<_i3.Either<_i6.Failure, _i7.ClientData>>.value(
               _FakeEither_1<_i6.Failure, _i7.ClientData>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i7.ClientData>>);
+}
+
+/// A class which mocks [DeleteClientUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteClientUseCase extends _i1.Mock
+    implements _i11.DeleteClientUseCase {
+  MockDeleteClientUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.ClientRepository get clientRepository =>
+      (super.noSuchMethod(Invocation.getter(#clientRepository),
+          returnValue: _FakeClientRepository_0()) as _i2.ClientRepository);
+  @override
+  set clientRepository(_i2.ClientRepository? _clientRepository) => super
+      .noSuchMethod(Invocation.setter(#clientRepository, _clientRepository),
+          returnValueForMissingStub: null);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, void>> call(int? clientId) =>
+      (super.noSuchMethod(Invocation.method(#call, [clientId]),
+              returnValue: Future<_i3.Either<_i6.Failure, void>>.value(
+                  _FakeEither_1<_i6.Failure, void>()))
+          as _i5.Future<_i3.Either<_i6.Failure, void>>);
 }

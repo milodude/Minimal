@@ -7,6 +7,7 @@ import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.
 
 import '../../../domain/use_cases/delete_client_use_case.dart';
 import '../../../domain/use_cases/get_clients_use_case.dart' as use_case;
+import '../../../domain/use_cases/params/client_params.dart';
 
 part 'client_event.dart';
 part 'client_state.dart';

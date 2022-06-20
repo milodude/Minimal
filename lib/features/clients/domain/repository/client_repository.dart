@@ -7,4 +7,5 @@ abstract class ClientRepository{
     Future<Either<Failure, List<ClientData>>> getClientList();    
     Future<Either<Failure, ClientData>> addClient(ClientData clientData);    
     Future<Either<Failure, void>> deleteClient(int clientId);
+    Future<Either<Failure, ClientData>> editClient(ClientData clientData);    
 }

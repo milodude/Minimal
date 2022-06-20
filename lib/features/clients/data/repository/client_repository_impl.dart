@@ -55,4 +55,10 @@ class ClientRepositoryImpl extends domain.ClientRepository {
       return Left(ServerFailure('Server error while trying to delete a user'));
     }
   }
+  
+  @override
+  Future<Either<Failure, ClientData>> editClient(ClientData clientData) {
+    // TODO: implement editClient
+    throw UnimplementedError();
+  }
 }

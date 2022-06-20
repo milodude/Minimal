@@ -12,9 +12,11 @@ import 'package:coda_test/features/clients/domain/repository/client_repository.d
 import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart'
     as _i10;
 import 'package:coda_test/features/clients/domain/use_cases/delete_client_use_case.dart'
-    as _i11;
+    as _i12;
 import 'package:coda_test/features/clients/domain/use_cases/get_clients_use_case.dart'
     as _i4;
+import 'package:coda_test/features/clients/domain/use_cases/params/client_params.dart'
+    as _i11;
 import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart'
     as _i9;
 import 'package:dartz/dartz.dart' as _i3;
@@ -98,7 +100,7 @@ class MockAddClientUseCase extends _i1.Mock implements _i10.AddClientUseCase {
           returnValueForMissingStub: null);
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.ClientData>> call(
-          _i10.ClientParams? params) =>
+          _i11.ClientParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
           returnValue: Future<_i3.Either<_i6.Failure, _i7.ClientData>>.value(
               _FakeEither_1<_i6.Failure, _i7.ClientData>())) as _i5
@@ -109,7 +111,7 @@ class MockAddClientUseCase extends _i1.Mock implements _i10.AddClientUseCase {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDeleteClientUseCase extends _i1.Mock
-    implements _i11.DeleteClientUseCase {
+    implements _i12.DeleteClientUseCase {
   MockDeleteClientUseCase() {
     _i1.throwOnMissingStub(this);
   }

@@ -143,18 +143,18 @@ void main() {
     test('Should delete a client', () async {
       //Arrange
       int clientId = 70;
-      final uri = Uri.https(serverUrl, '/client/remove/$clientId', null);
+      final uri = Uri.https(serverUrl, '/client/remove/$clientId', {});
       when(mockUrlProvider.getUrl(any, any))
           .thenAnswer((realInvocation) => uri);
 
-      when(mockClient.delete(uri, headers: anyNamed('headers'))).thenAnswer(
+      when(mockClient.delete(uri,body: json.encode({}), headers: anyNamed('headers'))).thenAnswer(
         (realInvocation) async => Future.value(
             http.Response(fixture('clients/delete_response.json'), 200)),
       );
       //Act
       await clientDataSource.deleteClient(clientId);
       //Assert
-      verify(mockClient.delete(uri, headers: {
+      verify(mockClient.delete(uri,body: json.encode({}), headers: {
         'Content-type': 'application/json',
         'Accept': '*/*',
         'Access-Control-Allow-Origin': '*',
@@ -165,11 +165,11 @@ void main() {
         () async {
       //Arrange
       int clientId = 70;
-      final uri = Uri.https(serverUrl, '/client/remove/$clientId', null);
+      final uri = Uri.https(serverUrl, '/client/remove/$clientId', {});
       when(mockUrlProvider.getUrl(any, any))
           .thenAnswer((realInvocation) => uri);
 
-      when(mockClient.delete(uri, headers: anyNamed('headers'))).thenAnswer(
+      when(mockClient.delete(uri, body: json.encode({}),headers: anyNamed('headers'))).thenAnswer(
         (realInvocation) async => http.Response('Something went wrong while saving the client', 404),
       );
       //Act

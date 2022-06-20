@@ -67,21 +67,18 @@ class ClientDataSource implements ClientRepository {
   
   @override
   Future<void> deleteClient(int clientId) async {
-           Uri uri = urlProvider.getUrl('/client/remove/$clientId', null);
-    var response = await httpClient.delete(uri, headers: {
+           Uri uri = urlProvider.getUrl('/client/remove/$clientId', {});
+    var response = await httpClient.delete(uri,body: json.encode({}), headers: {
       'Content-type': 'application/json',
       'Accept': '*/*',
       'Access-Control-Allow-Origin': '*',
     });
-    print('Status code ' + response.statusCode.toString());
     if (response.statusCode == 200) {
       var decodedJson = json.decode(response.body);
       if (decodedJson['success'] != true) {
-        print('No por success');
         throw ServerFailure(decodedJson['error']['message']);
       }
     } else {
-      print('Error  al hacer el delete');
       throw ServerFailure('Something went wrong while saving a client');
     }
   }

@@ -4,6 +4,7 @@ import 'package:coda_test/core/use_cases/use_case.dart';
 import 'package:coda_test/features/clients/domain/entities/client.dart';
 import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart';
 import 'package:coda_test/features/clients/domain/use_cases/delete_client_use_case.dart';
+import 'package:coda_test/features/clients/domain/use_cases/edit_client_use_case.dart';
 import 'package:coda_test/features/clients/domain/use_cases/get_clients_use_case.dart';
 import 'package:coda_test/features/clients/presentation/bloc/clients/client_bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -17,17 +18,21 @@ import 'client_bloc_test.mocks.dart';
   GetClientsUseCase,
   ShowMoreInClientsList,
   AddClientUseCase,
-  DeleteClientUseCase
+  DeleteClientUseCase,
+  EditClientUseCase
 ])
 void main() {
   MockGetClientsUseCase mockGetClientsUseCase = MockGetClientsUseCase();
   MockAddClientUseCase mockAddClientUseCase = MockAddClientUseCase();
   MockDeleteClientUseCase mockDeleteClientUseCase = MockDeleteClientUseCase();
+  MockEditClientUseCase mockEditClientUseCase = MockEditClientUseCase();
+
 
   late ClientBloc bloc = ClientBloc(
     getClientsUseCase: mockGetClientsUseCase,
     addClientUseCase: mockAddClientUseCase,
     deleteClientUseCase: mockDeleteClientUseCase,
+    editClientUseCase: mockEditClientUseCase
   );
 
   List<ClientData> tClientData = <ClientData>[
@@ -86,7 +91,8 @@ void main() {
       bloc = ClientBloc(
           getClientsUseCase: mockGetClientsUseCase,
           addClientUseCase: mockAddClientUseCase,
-          deleteClientUseCase: mockDeleteClientUseCase);
+          deleteClientUseCase: mockDeleteClientUseCase,
+          editClientUseCase: mockEditClientUseCase);
     });
 
     blocTest<ClientBloc, ClientState>(

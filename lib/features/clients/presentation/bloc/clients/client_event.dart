@@ -33,3 +33,11 @@ class DeleteClient extends ClientEvent {
     required this.clientId,
   });
 }
+
+
+class EditClient extends ClientEvent {
+  final ClientData clientToEdit;
+  const EditClient({
+    required this.clientToEdit,
+  });
+}

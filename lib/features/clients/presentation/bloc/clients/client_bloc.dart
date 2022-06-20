@@ -6,6 +6,7 @@ import 'package:coda_test/features/clients/domain/entities/client.dart';
 import 'package:coda_test/features/clients/domain/use_cases/add_client_use_case.dart';
 
 import '../../../domain/use_cases/delete_client_use_case.dart';
+import '../../../domain/use_cases/edit_client_use_case.dart';
 import '../../../domain/use_cases/get_clients_use_case.dart' as use_case;
 import '../../../domain/use_cases/params/client_params.dart';
 
@@ -16,14 +17,17 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final use_case.GetClientsUseCase getClientsUseCase;
   final AddClientUseCase addClientUseCase;
   final DeleteClientUseCase deleteClientUseCase;
+  final EditClientUseCase editClientUseCase;
 
   ClientBloc({
     required this.getClientsUseCase,
     required this.addClientUseCase,
     required this.deleteClientUseCase,
+    required this.editClientUseCase,
   }) : super(Initial()) {
     on<ClientEvent>((event, emit) async {
       if (event is GetClients) {
+        print('Pido  clientes');
         emit(Loading());
         final result = await getClientsUseCase(NoParams());
         result.fold(
@@ -66,6 +70,18 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
              List<ClientData> listWithoutDeleted = List.from(state.clientDataToShow
             .where((value) => value.id != event.clientId));
             emit(Saved(state.clientsData, listWithoutDeleted));
+          },
+        );
+      }
+
+      if (event is EditClient) {
+        emit(Loading());
+        final result = await editClientUseCase(ClientParams(client: event.clientToEdit));
+
+        result.fold(
+          (left) => emit(Error(errorMessage: left.toString())),
+          (right) {
+            emit(Saved(state.clientsData, state.clientDataToShow));
           },
         );
       }

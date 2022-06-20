@@ -241,7 +241,7 @@ class _ClientsPageState extends State<ClientsPage> {
                 child: Stack(
                   children: const[
                     BaseAddClientModal(),
-                    AddClientModal(),
+                    AddClientModal(title: 'Add new client',),
                   ],
                 )
             ),

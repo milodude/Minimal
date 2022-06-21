@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_launcher_icons: ^0.9.3
   flutter_modular: ^5.0.3
   get_it: ^7.2.0
   google_fonts: ^3.0.1
@@ -24,6 +25,7 @@ dependencies:
   lint: ^1.8.2
   mockito: ^5.2.0
   provider: ^6.0.3
+  rename: ^2.0.1
   simple_animations: ^4.1.0
 
 dev_dependencies:
@@ -31,10 +33,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  
 flutter:
 
   uses-material-design: true
   assets:
     - assets/
+    - assets/icon/
     - assets/images/upload-coda.jpg
     - assets/images/profile-pic.png

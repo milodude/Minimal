@@ -21,7 +21,7 @@ class ClientsGridView extends StatelessWidget {
     return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
-          "Are you sure you want to delete ${client.firstName}, ${client.lastName} client?",
+          'Are you sure you want to delete ${client.firstName}, ${client.lastName} client?',
           style: const TextStyle(fontSize: 22),
           textAlign: TextAlign.center,
         ),

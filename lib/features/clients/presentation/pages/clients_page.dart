@@ -27,12 +27,15 @@ class _ClientsPageState extends State<ClientsPage> {
   }
 
   Widget _getBody(BuildContext context) {
+    final screenWidth =  MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: screenWidth,
+            height: screenHeight,
             child: Stack(
               children: [
                 YellowBubble(
@@ -69,7 +72,7 @@ class _ClientsPageState extends State<ClientsPage> {
                 )),
                 Positioned.fill(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
+                    padding: EdgeInsets.only(top: screenHeight - screenHeight * 0.95),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: PlayAnimation<double>(
@@ -91,12 +94,12 @@ class _ClientsPageState extends State<ClientsPage> {
                 ),
                 Positioned(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 120.0, left: 32),
+                    padding: EdgeInsets.only(top: screenHeight - screenHeight * 0.85, left: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'CLIENTS',
+                          clientsTitle,
                           style: TextStyle(fontSize: 20),
                         ),
                         const SizedBox(
@@ -114,10 +117,10 @@ class _ClientsPageState extends State<ClientsPage> {
                                     controller: inputController,
                                     keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
-                                      hintText: 'Client name..',
+                                      hintText: searchBarHintText,
                                       hintStyle:
                                           const TextStyle(color: Colors.grey),
-                                      labelText: 'Search...',
+                                      labelText: searchBarLabel,
                                       prefixIcon:
                                           const Icon(Icons.search_sharp),
                                       border: OutlineInputBorder(
@@ -125,7 +128,6 @@ class _ClientsPageState extends State<ClientsPage> {
                                       ),
                                     ),
                                     onChanged: (String inputText) {
-                                      //todo: implement search;
                                       var clientBloc = context.read<ClientBloc>();
                                       if (inputText.isNotEmpty) {
                                         clientBloc.add(SearchClient(name: inputText));
@@ -191,7 +193,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                     );
                                   },
                                   child: const Text(
-                                    'ADD NEW',
+                                    buttonAddNewText,
                                     style: TextStyle(letterSpacing: 0.5),
                                   ),
                                 ),
@@ -200,7 +202,7 @@ class _ClientsPageState extends State<ClientsPage> {
                           ),
                         ),
 
-                        ///Clients list
+                        //*Clients list
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -208,8 +210,7 @@ class _ClientsPageState extends State<ClientsPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(right:30.0),
                                 child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height - 170 - 200,
+                                  height: screenHeight - screenHeight * 0.47,
                                   child: const BaseClientsGridView(),
                                 ),
                               ),
@@ -217,14 +218,14 @@ class _ClientsPageState extends State<ClientsPage> {
                           ],
                         ),
 
-                        ///Add more button
+                        //*Load more button
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 32),
+                              padding: const EdgeInsets.only(top: 32, right: 15),
                               child: SizedBox(
-                                width: 296,
+                                width: screenWidth - screenWidth * 0.24,
                                 height: 52,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -245,7 +246,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                             clientBloc.state.clientDataToShow));
                                   },
                                   child: const Text(
-                                    'LOAD MORE',
+                                    buttonLoadMoreText,
                                     style: TextStyle(letterSpacing: 0.5),
                                   ),
                                 ),
@@ -264,34 +265,4 @@ class _ClientsPageState extends State<ClientsPage> {
       ),
     );
   }
-
-//   _displayDialog(BuildContext context) {
-//     showGeneralDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       transitionDuration: const Duration(milliseconds: 300),
-//       transitionBuilder: (context, animation, secondaryAnimation, child) {
-//         return FadeTransition(
-//           opacity: animation,
-//           child: ScaleTransition(
-//             scale: animation,
-//             child: child,
-//           ),
-//         );
-//       },
-//       pageBuilder: (context, animation, secondaryAnimation) {
-//         return SafeArea(
-//           child: Material(
-//             child: Container(
-//               width: MediaQuery.of(context).size.width,
-//               height: MediaQuery.of(context).size.height,
-//               padding: const EdgeInsets.all(20),
-//               color: Colors.white,
-//               child: const AddClientModal(title: 'Add new client',)
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
 }

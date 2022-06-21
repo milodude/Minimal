@@ -12,6 +12,7 @@ dependencies:
   build_runner: ^2.1.11
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
+  email_validator: ^2.0.1
   equatable: ^2.0.3
   flutter:
     sdk: flutter
@@ -37,7 +38,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icon/icon.png"
-  
+
 flutter:
 
   uses-material-design: true

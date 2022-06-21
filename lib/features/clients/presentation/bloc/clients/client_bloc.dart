@@ -91,13 +91,19 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       }
       //!EDIT a client
       if (event is EditClient) {
+        var toShow = state.clientDataToShow;
+        var clients = state.clientsData;
         emit(Loading());
         final result = await editClientUseCase(ClientParams(client: event.clientToEdit));
 
         result.fold(
           (left) => emit(Error(errorMessage: left.toString())),
           (right) {
-            emit(Saved(state.clientsData, state.clientDataToShow));
+            toShow.removeWhere((element) => element.id == right.id);
+            toShow.add(right);
+            toShow.sort((a, b) => b.id.compareTo(a.id));
+            var newState = state.copyWith(clientsData: clients,clientDataToShow: toShow);
+            emit(Saved(newState.clientsData, newState.clientDataToShow));
           },
         );
       }

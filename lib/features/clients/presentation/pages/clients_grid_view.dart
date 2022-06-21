@@ -6,6 +6,7 @@ import '../../../../core/constants/images.dart';
 import '../../domain/entities/client.dart';
 import '../bloc/clients/client_bloc.dart';
 import '../widgets/search_no_results_found.dart';
+import 'base_add_edit_client_modal.dart';
 
 ///Widget that shows you a list of clients
 class ClientsGridView extends StatelessWidget {
@@ -103,42 +104,79 @@ class ClientsGridView extends StatelessWidget {
                       onSelected: (String value) {
                         if (value == 'delete') {
                           showDialog(
-                              useSafeArea: true,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return BlocListener<ClientBloc, ClientState>(
-                                  listener: (context, state) {
-                                    if (state is Error) {
-                                      Navigator.of(context).pop();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        backgroundColor: Colors.redAccent,
-                                        duration: const Duration(seconds: 5),
-                                        content: Text(state.errorMessage),
-                                      ));
-                                    }
-                                    if (state is Saved) {
-                                      Navigator.of(context).pop();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        backgroundColor: Colors.greenAccent,
-                                        duration: Duration(seconds: 5),
-                                        content: Text('Client Deleted!'),
-                                      ));
-                                      context
-                                          .read<ClientBloc>()
-                                          .add(const GetClients());
-                                    }
+                            useSafeArea: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BlocListener<ClientBloc, ClientState>(
+                                listener: (context, state) {
+                                  if (state is Error) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.redAccent,
+                                      duration: const Duration(seconds: 5),
+                                      content: Text(state.errorMessage),
+                                    ));
+                                  }
+                                  if (state is Saved) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      backgroundColor: Colors.greenAccent,
+                                      duration: Duration(seconds: 5),
+                                      content: Text('Client Deleted!'),
+                                    ));
+                                    context
+                                        .read<ClientBloc>()
+                                        .add(const GetClients());
+                                  }
+                                },
+                                child: BlocBuilder<ClientBloc, ClientState>(
+                                  builder: (context, state) {
+                                    return setupAlertDialoadContainer(
+                                        context, clientsToShow[index]);
                                   },
-                                  child: BlocBuilder<ClientBloc, ClientState>(
-                                    builder: (context, state) {
-                                      return setupAlertDialoadContainer(
-                                          context, clientsToShow[index]);
-                                    },
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        if (value == 'edit') {
+                            showGeneralDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              transitionDuration:
+                                  const Duration(milliseconds: 300),
+                              transitionBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: animation,
+                                    child: child,
                                   ),
                                 );
-                              });
-                        }
+                              },
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return SafeArea(
+                                  child: Material(
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        padding: const EdgeInsets.all(20),
+                                        color: Colors.white,
+                                        child: BaseAddEditClientModal(
+                                          title: 'Edit client',
+                                          client: clientsToShow[index],
+                                        )),
+                                  ),
+                                );
+                              },
+                            );
+                          }
                       },
                     ),
                   ),

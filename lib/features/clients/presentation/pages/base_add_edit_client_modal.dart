@@ -31,6 +31,7 @@ class _BAddClientModalState extends State<BaseAddEditClientModal> {
   final mailInputController = TextEditingController();
 
   File? image;
+  final GlobalKey<FormState> _modalFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -57,7 +58,6 @@ class _BAddClientModalState extends State<BaseAddEditClientModal> {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       height: MediaQuery.of(context).size.height - 100,
       child: Center(
@@ -97,48 +97,69 @@ class _BAddClientModalState extends State<BaseAddEditClientModal> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      width: 295,
-                      height: 100,
-                      child: TextField(
-                        controller: firstNameInputController,
-                        decoration: const InputDecoration(
-                          labelText: 'First Name*',
+              Form(
+                key: _modalFormKey,
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: 295,
+                        height: 100,
+                        child: TextFormField(
+                          controller: firstNameInputController,
+                          decoration: const InputDecoration(
+                            labelText: 'First Name*',
+                          ),
+                          validator: (String? name) {
+                            if (name == null || name.isEmpty) {
+                              return 'You must add a firstname';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      width: 295,
-                      height: 100,
-                      child: TextField(
-                        controller: lastNameInputController,
-                        decoration: const InputDecoration(
-                          labelText: 'Last Name*',
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: 295,
+                        height: 100,
+                        child: TextFormField(
+                          controller: lastNameInputController,
+                          decoration: const InputDecoration(
+                            labelText: 'Last Name*',
+                          ),
+                          validator: (String? name) {
+                            if (name == null || name.isEmpty) {
+                              return 'You must add a lastname';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      width: 295,
-                      height: 100,
-                      child: TextField(
-                        controller: mailInputController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email address*',
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: 295,
+                        height: 100,
+                        child: TextFormField(
+                          controller: mailInputController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email address*',
+                          ),
+                          validator: (String? name) {
+                            if (name == null || name.isEmpty) {
+                              return 'You must add an email';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,6 +180,8 @@ class _BAddClientModalState extends State<BaseAddEditClientModal> {
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
+                      print('llega?');
+                      if (!_modalFormKey.currentState!.validate()) return;
                       final clientBloc = context.read<ClientBloc>();
                       ClientData newClient = ClientData(
                         id: widget.client == null ? 0 : widget.client!.id,

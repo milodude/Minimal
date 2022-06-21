@@ -20,7 +20,7 @@ Challenge made in Flutter
 
 1. Clone the repo
 2. Install the apk provided in the distribution folder in your cellphone.
-3. The application is under the name "Coda Integration" so you can find it in your cellphone.
+3. The application is under the name "Coda-Minimal" so you can find it in your cellphone.
 4. Enjoy!
 
 ## ===== Inside the app, main functionalities =====

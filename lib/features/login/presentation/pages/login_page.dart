@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final isKeyBoardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 

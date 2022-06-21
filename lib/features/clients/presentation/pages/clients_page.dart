@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_animations/stateless_animation/play_animation.dart';
 
+import '../../../../core/constants/text.dart';
 import '../../../../core/shared_widgets/yellow_bubble.dart';
 import '../bloc/clients/client_bloc.dart';
 import 'base_add_edit_client_modal.dart';
@@ -78,7 +79,7 @@ class _ClientsPageState extends State<ClientsPage> {
                           return Opacity(
                             opacity: value,
                             child: const Text(
-                              'minimal',
+                              appName,
                               style: TextStyle(
                                   fontSize: 34, fontWeight: FontWeight.bold),
                             ),
@@ -106,9 +107,8 @@ class _ClientsPageState extends State<ClientsPage> {
                           child: Row(
                             children: [
                               Expanded(
-                                flex: 7,
+                                flex: 6,
                                 child: SizedBox(
-                                  width: 117,
                                   height: 36,
                                   child: TextFormField(
                                     controller: inputController,
@@ -140,7 +140,7 @@ class _ClientsPageState extends State<ClientsPage> {
                                 width: 16,
                               ),
                               Expanded(
-                                flex: 3,
+                                flex: 4,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.black,
@@ -201,13 +201,20 @@ class _ClientsPageState extends State<ClientsPage> {
                         ),
 
                         ///Clients list
-                        Padding(
-                          padding: const EdgeInsets.only(top: 32.0, right: 32),
-                          child: SizedBox(
-                            height:
-                                MediaQuery.of(context).size.height - 170 - 200,
-                            child: const BaseClientsGridView(),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right:30.0),
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height - 170 - 200,
+                                  child: const BaseClientsGridView(),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
 
                         ///Add more button

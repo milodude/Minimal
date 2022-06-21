@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_animations/simple_animations.dart';
 
+import '../../../../core/constants/text.dart';
 import '../../../../core/shared_widgets/yellow_bubble.dart';
 import '../../../clients/presentation/pages/clients_page.dart';
 
@@ -26,12 +27,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final isKeyBoardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+          width: screenWidth,
+          height: screenHeight,
           child: BlocListener<UserBloc, UserState>(
             listener: (context, state) {
               if (state.userinfo.accessToken.isNotEmpty) {
@@ -72,27 +75,24 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.transparent,
                   ),
                 )),
-                Visibility(
-                  visible: !isKeyBoardOpen,
-                  child: Positioned.fill(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 150.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: PlayAnimation<double>(
-                          tween: Tween(begin: 0.0, end: 1.0),
-                          duration: const Duration(seconds: 1),
-                          builder: (context, child, value) {
-                            return Opacity(
-                              opacity: value,
-                              child: const Text(
-                                'minimal',
-                                style: TextStyle(
-                                    fontSize: 54, fontWeight: FontWeight.bold),
-                              ),
-                            );
-                          },
-                        ),
+                Positioned.fill(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: isKeyBoardOpen ? screenHeight - screenHeight * 0.97 : screenHeight - screenHeight * 0.80),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: PlayAnimation<double>(
+                        tween: Tween(begin: 0.0, end: 1.0),
+                        duration: const Duration(seconds: 2),
+                        builder: (context, child, value) {
+                          return Opacity(
+                            opacity: value,
+                            child: const Text(
+                              appName,
+                              style: TextStyle(
+                                  fontSize: 54, fontWeight: FontWeight.bold, ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 Visibility(
                   visible: !isKeyBoardOpen,
                   child: Positioned.fill(
-                    top: MediaQuery.of(context).size.height - 398,
+                    top: screenHeight - screenHeight * 0.6 ,
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: PlayAnimation<double>(
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                           return Opacity(
                             opacity: value,
                             child: Text(
-                              'LOG IN',
+                              logIn,
                               style: GoogleFonts.dmSans(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -124,10 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Positioned(
                   top: !isKeyBoardOpen
-                      ? MediaQuery.of(context).size.height - 320
-                      : MediaQuery.of(context).size.height -
-                          320 -
-                          keyboardHeight,
+                      ? screenHeight - screenHeight * 0.53
+                      : screenHeight - screenHeight * 0.88,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 50.0, right: 50),
                     child: Align(
@@ -147,10 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Positioned(
                   top: !isKeyBoardOpen
-                      ? MediaQuery.of(context).size.height - 260
-                      : MediaQuery.of(context).size.height -
-                          260 -
-                          keyboardHeight,
+                      ? screenHeight - screenHeight * 0.45
+                      : screenHeight - screenHeight * 0.80,
                   child: Padding(
                     padding: EdgeInsets.only(
                         left: 50.0,
@@ -182,10 +178,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Positioned(
                   top: !isKeyBoardOpen
-                      ? MediaQuery.of(context).size.height - 120
-                      : MediaQuery.of(context).size.height -
-                          120 -
-                          keyboardHeight,
+                      ? screenHeight - screenHeight * 0.25
+                      : screenHeight - screenHeight * 0.59,
                   child: Padding(
                     padding: EdgeInsets.only(
                         left: 50.0,
@@ -217,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                               ));
                         },
                         child: const Text(
-                          'LOG IN',
+                          logIn,
                           style: TextStyle(letterSpacing: 0.5),
                         ),
                       ),

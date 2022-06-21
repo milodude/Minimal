@@ -41,3 +41,10 @@ class EditClient extends ClientEvent {
     required this.clientToEdit,
   });
 }
+
+class SearchClient extends ClientEvent {
+  final String name;
+  const SearchClient({
+    required this.name,
+  });
+}

@@ -36,3 +36,4 @@ flutter:
   assets:
     - assets/
     - assets/images/upload-coda.jpg
+    - assets/images/profile-pic.png

@@ -27,13 +27,11 @@ void main() {
   MockDeleteClientUseCase mockDeleteClientUseCase = MockDeleteClientUseCase();
   MockEditClientUseCase mockEditClientUseCase = MockEditClientUseCase();
 
-
   late ClientBloc bloc = ClientBloc(
-    getClientsUseCase: mockGetClientsUseCase,
-    addClientUseCase: mockAddClientUseCase,
-    deleteClientUseCase: mockDeleteClientUseCase,
-    editClientUseCase: mockEditClientUseCase
-  );
+      getClientsUseCase: mockGetClientsUseCase,
+      addClientUseCase: mockAddClientUseCase,
+      deleteClientUseCase: mockDeleteClientUseCase,
+      editClientUseCase: mockEditClientUseCase);
 
   List<ClientData> tClientData = <ClientData>[
     const ClientData(
@@ -95,10 +93,10 @@ void main() {
           editClientUseCase: mockEditClientUseCase);
     });
 
-    blocTest<ClientBloc, ClientState>(
-        'should delete a client',
-        setUp: () => when(mockDeleteClientUseCase.call(tClientData.first.id)).thenAnswer(
-            (realInvocation) async => Future.value(const Right(null))),
+    blocTest<ClientBloc, ClientState>('should delete a client',
+        setUp: () => when(mockDeleteClientUseCase.call(tClientData.first.id))
+            .thenAnswer(
+                (realInvocation) async => Future.value(const Right(null))),
         build: () {
           return bloc;
         },
@@ -152,7 +150,21 @@ void main() {
             ],
         tearDown: bloc.close,
         wait: const Duration(milliseconds: 500));
-  });
 
-  
+    blocTest<ClientBloc, ClientState>(
+      'should filter values in an ordered manner when the user uses the search bar.',
+      build: () {
+        return bloc;
+      },
+      act: (bloc) {
+        bloc.add(const SearchClient(name: 'firstName1'));
+      },
+      expect: () => <ClientState>[
+        Loaded(bloc.state.clientsData, bloc.state.clientsData.take(5).toList()),
+      ],
+      tearDown: bloc.close,
+      wait: const Duration(milliseconds: 500),
+    );
+
+  });
 }

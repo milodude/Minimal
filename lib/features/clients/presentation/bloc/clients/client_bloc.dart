@@ -26,6 +26,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
     required this.editClientUseCase,
   }) : super(Initial()) {
     on<ClientEvent>((event, emit) async {
+      //!GET clients list
       if (event is GetClients) {
         emit(Loading());
         final result = await getClientsUseCase(NoParams());
@@ -37,6 +38,8 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
           },
         );
       }
+
+      //!SHOW more clients
       if (event is ShowMoreInClientsList) {
         List<ClientData> filteredLst = List.from(state.clientsData
             .where((value) => !state.clientDataToShow.contains(value)));
@@ -47,6 +50,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         emit(Loaded(state.clientsData, addedValues));
       }
 
+      //!ADD a client
       if (event is AddClient) {
         List<ClientData> updatedList = <ClientData>[];
         emit(Loading());
@@ -71,7 +75,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
           },
         );
       }
-
+      //!DELETE a client
       if (event is DeleteClient) {
         emit(Loading());
         final result = await deleteClientUseCase(event.clientId);
@@ -85,7 +89,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
           },
         );
       }
-
+      //!EDIT a client
       if (event is EditClient) {
         emit(Loading());
         final result = await editClientUseCase(ClientParams(client: event.clientToEdit));
@@ -97,6 +101,13 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
           },
         );
       }
+
+      if (event is SearchClient) {
+        var filteredList = state.clientsData.where((element) => element.firstName == event.name).toList();
+        filteredList.sort((a, b) => a.firstName.compareTo(event.name));
+        emit(Loaded(state.clientsData, filteredList.take(5).toList()));
+      }
+
     });
   }
 }
